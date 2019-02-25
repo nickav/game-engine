@@ -3,11 +3,11 @@ import { m4 } from 'twgl.js';
 
 import { parseTextureAtlas } from '@/helpers';
 
-import BlendMode from './BlendMode';
+import BlendMode from '@/components/core/BlendMode';
+import View from '@/components/core/View';
 import SpriteRenderer from './SpriteRenderer';
 import ShapeRenderer from './ShapeRenderer';
 import FontRenderer from './FontRenderer';
-import View from './View';
 
 const isDev = process.env.NODE_ENV === 'development';
 twgl.setDefaultTextureColor([0.0, 0.0, 0.0, isDev ? 1.0 : 0.0]);

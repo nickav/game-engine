@@ -1,6 +1,7 @@
 import Ticker from './Ticker';
-import Renderer from './Renderer';
 import GameState from './GameState';
+
+import { Renderer } from '@/components/display';
 import { InputManager } from '@/components/input';
 import { SoundManager } from '@/components/audio';
 
