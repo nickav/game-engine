@@ -19,10 +19,17 @@ export default class ShapeRenderer {
 
     const numVertices = 3 * this.MAX_SHAPES;
 
-    // prettier-ignore
     this.arrays = {
-      position: twgl.primitives.createAugmentedTypedArray(2, numVertices, Float32Array),
-      color: twgl.primitives.createAugmentedTypedArray(4, numVertices, Float32Array),
+      position: twgl.primitives.createAugmentedTypedArray(
+        2,
+        numVertices,
+        Float32Array
+      ),
+      color: twgl.primitives.createAugmentedTypedArray(
+        4,
+        numVertices,
+        Float32Array
+      ),
     };
 
     this.bufferInfo = twgl.createBufferInfoFromArrays(gl, this.arrays);
@@ -137,8 +144,17 @@ export default class ShapeRenderer {
     this.batchSize += 2;
   }
 
-  // prettier-ignore
-  arc(x, y, radius, startAngle = 0, endAngle = Math.PI * 2, stroke = 1, fill = WHITE, alpha = 1, precision = 64) {
+  hollowArc(
+    x,
+    y,
+    radius,
+    startAngle = 0,
+    endAngle = Math.PI * 2,
+    stroke = 1,
+    fill = WHITE,
+    alpha = 1,
+    precision = 64
+  ) {
     if (precision < 0 || alpha <= 0) return;
 
     const c = [fill[0], fill[1], fill[2], fill[3] * alpha];
@@ -164,7 +180,7 @@ export default class ShapeRenderer {
     }
   }
 
-  rectangleStroke(x1, y1, x2, y2, stroke = 1, fill = WHITE, alpha = 1) {
+  hollowRect(x1, y1, x2, y2, stroke = 1, fill = WHITE, alpha = 1) {
     if (alpha <= 0) return;
 
     const halfStroke = stroke * 0.5;

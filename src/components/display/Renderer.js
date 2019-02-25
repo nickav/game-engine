@@ -34,7 +34,6 @@ export default class Renderer extends View {
     this.spriteBatch = new SpriteRenderer(gl);
     this.shapeBatch = new ShapeRenderer(gl);
     this.fontBatch = new FontRenderer(gl);
-    this.spriteBatch.setScale(0.5);
   }
 
   create() {
@@ -69,11 +68,6 @@ export default class Renderer extends View {
     this.spriteBatch.setViewMatrix(viewMatrix);
     this.shapeBatch.setViewMatrix(viewMatrix);
     this.fontBatch.setViewMatrix(viewMatrix);
-  }
-
-  postRender() {
-    this.spriteBatch.flush();
-    this.shapeBatch.flush();
   }
 
   destroy() {

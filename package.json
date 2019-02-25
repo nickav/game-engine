@@ -1,13 +1,10 @@
 {
   "scripts": {
-    "clean": "rm -rf bin/ && rm -rf app/www/",
-    "dist": "yarn clean && webpack --mode=production && cp -r bin/ app/www",
+    "clean": "rm -rf bin",
+    "dist": "yarn clean && webpack --mode=production",
     "start": "yarn start:dev",
     "start:dev": "NODE_ENV=development webpack-dev-server --inline --hot --host 0.0.0.0 --content-base bin/ --history-api-fallback",
-    "start:ios": "cd app && cordova run ios --buildFlag='-UseModernBuildSystem=0'",
-    "start:android": "cd app && cordova run android",
-    "sprites": "node build/create-spritesheet public/img public/",
-    "run:ios": "yarn dist && yarn start:ios; osascript xc-run.applescript"
+    "sprites": "node build/create-spritesheet public/img public/"
   },
   "dependencies": {
     "@babel/core": "^7.3.4",
