@@ -10,9 +10,10 @@ export default class Game {
     if (!canvas) {
       canvas = document.createElement('canvas');
 
-      const { style } = canvas;
-      style.width = '100%';
-      style.height = '100%';
+      Object.assign(canvas.style, {
+        width: '100%',
+        height: '100%',
+      });
 
       document.body.appendChild(canvas);
     }

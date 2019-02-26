@@ -21,13 +21,6 @@ export default class View {
     return transformPoint(vm, point);
   }
 
-  getViewMatrix() {
-    const viewMatrix = m4.identity();
-    m4.ortho(0, this.displayWidth, this.displayHeight, 0, -1, 1, viewMatrix);
-    m4.scale(viewMatrix, [this.scale, this.scale, 1], viewMatrix);
-    return viewMatrix;
-  }
-
   getSize() {
     const { width, height } = this;
     return { width, height };
@@ -52,6 +45,16 @@ export default class View {
     // computed props
     this.width = this.displayWidth / this.scale;
     this.height = this.displayHeight / this.scale;
-    this.viewMatrix = this.getViewMatrix();
+    this.viewMatrix = this._updateViewMatrix();
+  }
+
+  getViewMatrix() {
+    return this.viewMatrix;
+  }
+
+  _updateViewMatrix() {
+    m4.ortho(0, this.displayWidth, this.displayHeight, 0, -1, 1, this.viewMatrix);
+    m4.scale(this.viewMatrix, [this.scale, this.scale, 1], this.viewMatrix);
+    return this.viewMatrix;
   }
 }

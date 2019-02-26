@@ -1,7 +1,4 @@
 import * as twgl from 'twgl.js';
-import { m4 } from 'twgl.js';
-
-import { parseTextureAtlas } from '@/helpers';
 
 import BlendMode from '@/components/core/BlendMode';
 import View from '@/components/core/View';
@@ -30,7 +27,6 @@ export default class Renderer extends View {
       return;
     }
 
-    this.sprites = null;
     this.spriteBatch = new SpriteRenderer(gl);
     this.shapeBatch = new ShapeRenderer(gl);
     this.fontBatch = new FontRenderer(gl);
@@ -64,6 +60,7 @@ export default class Renderer extends View {
     gl.enable(gl.BLEND);
     gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
 
+    // update view matricies
     const viewMatrix = this.getViewMatrix();
     this.spriteBatch.setViewMatrix(viewMatrix);
     this.shapeBatch.setViewMatrix(viewMatrix);
@@ -77,7 +74,6 @@ export default class Renderer extends View {
 
     this.view = null;
     this.gl = null;
-    this.sprites = null;
     this.spriteBatch = null;
     this.shapeBatch = null;
     this.fontBatch = null;
@@ -99,37 +95,6 @@ export default class Renderer extends View {
   isReady() {
     return !!this.gl;
   }
-
-  loadSprites = (params, json) => {
-    if (typeof params === 'string') {
-      params = { src: params };
-    }
-
-    const { gl } = this;
-
-    const defaultParams = {
-      mag: gl.NEAREST,
-      min: gl.NEAREST,
-    };
-
-    this.sprites = json ? parseTextureAtlas(json) : null;
-
-    return this.loadTexture({ ...defaultParams, ...params }).then((result) => {
-      this.spriteBatch.setTexture(result.texture);
-      return result;
-    });
-  };
-
-  loadTexture = (params) => {
-    const { gl } = this;
-
-    return new Promise((res, rej) =>
-      twgl.createTexture(this.gl, params, (err, texture, image) => {
-        if (err) return rej(err);
-        res({ texture, image, params });
-      })
-    );
-  };
 
   resize = () => {
     const { gl, view } = this;
