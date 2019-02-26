@@ -218,6 +218,7 @@ export default class ShapeRenderer {
   }
 
   clear() {
+    if (this.batchSize === 0) return;
     this.batchSize = 0;
     this.arrays.position.reset();
     this.arrays.color.reset();

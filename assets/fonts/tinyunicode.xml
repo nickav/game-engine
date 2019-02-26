@@ -1,0 +1,105 @@
+<font>
+ <info size="12" face="TinyUnicode"/>
+ <common lineHeight="14"/>
+ <pages>
+  <page id="0" file="tinyunicode.png"/>
+ </pages>
+ <chars count="95">
+  <char width="0" page="0" x="1" y="7" xoffset="0" chnl="0" letter=" " height="0" yoffset="14" xadvance="5" id="32"/>
+  <char width="1" page="0" x="2" y="2" xoffset="0" chnl="0" letter="!" height="5" yoffset="9" xadvance="2" id="33"/>
+  <char width="3" page="0" x="4" y="1" xoffset="0" chnl="0" letter="&quot;" height="2" yoffset="8" xadvance="4" id="34"/>
+  <char width="5" page="0" x="8" y="2" xoffset="0" chnl="0" letter="#" height="5" yoffset="9" xadvance="6" id="35"/>
+  <char width="4" page="0" x="14" y="2" xoffset="0" chnl="0" letter="$" height="6" yoffset="9" xadvance="5" id="36"/>
+  <char width="3" page="0" x="19" y="2" xoffset="0" chnl="0" letter="%" height="5" yoffset="9" xadvance="4" id="37"/>
+  <char width="5" page="0" x="23" y="2" xoffset="0" chnl="0" letter="&amp;" height="5" yoffset="9" xadvance="6" id="38"/>
+  <char width="1" page="0" x="29" y="1" xoffset="0" chnl="0" letter="'" height="2" yoffset="8" xadvance="2" id="39"/>
+  <char width="2" page="0" x="31" y="1" xoffset="0" chnl="0" letter="(" height="7" yoffset="8" xadvance="3" id="40"/>
+  <char width="2" page="0" x="34" y="1" xoffset="0" chnl="0" letter=")" height="7" yoffset="8" xadvance="3" id="41"/>
+  <char width="3" page="0" x="37" y="1" xoffset="0" chnl="0" letter="*" height="3" yoffset="8" xadvance="4" id="42"/>
+  <char width="3" page="0" x="41" y="3" xoffset="0" chnl="0" letter="+" height="3" yoffset="10" xadvance="4" id="43"/>
+  <char width="2" page="0" x="45" y="6" xoffset="0" chnl="0" letter="," height="2" yoffset="13" xadvance="3" id="44"/>
+  <char width="3" page="0" x="48" y="4" xoffset="0" chnl="0" letter="-" height="1" yoffset="11" xadvance="4" id="45"/>
+  <char width="1" page="0" x="52" y="6" xoffset="0" chnl="0" letter="." height="1" yoffset="13" xadvance="2" id="46"/>
+  <char width="3" page="0" x="54" y="2" xoffset="0" chnl="0" letter="/" height="5" yoffset="9" xadvance="4" id="47"/>
+  <char width="4" page="0" x="58" y="2" xoffset="0" chnl="0" letter="0" height="5" yoffset="9" xadvance="5" id="48"/>
+  <char width="2" page="0" x="1" y="9" xoffset="0" chnl="0" letter="1" height="5" yoffset="9" xadvance="3" id="49"/>
+  <char width="4" page="0" x="4" y="9" xoffset="0" chnl="0" letter="2" height="5" yoffset="9" xadvance="5" id="50"/>
+  <char width="4" page="0" x="9" y="9" xoffset="0" chnl="0" letter="3" height="5" yoffset="9" xadvance="5" id="51"/>
+  <char width="4" page="0" x="14" y="9" xoffset="0" chnl="0" letter="4" height="5" yoffset="9" xadvance="5" id="52"/>
+  <char width="4" page="0" x="19" y="9" xoffset="0" chnl="0" letter="5" height="5" yoffset="9" xadvance="5" id="53"/>
+  <char width="4" page="0" x="24" y="9" xoffset="0" chnl="0" letter="6" height="5" yoffset="9" xadvance="5" id="54"/>
+  <char width="4" page="0" x="29" y="9" xoffset="0" chnl="0" letter="7" height="5" yoffset="9" xadvance="5" id="55"/>
+  <char width="4" page="0" x="34" y="9" xoffset="0" chnl="0" letter="8" height="5" yoffset="9" xadvance="5" id="56"/>
+  <char width="4" page="0" x="39" y="9" xoffset="0" chnl="0" letter="9" height="5" yoffset="9" xadvance="5" id="57"/>
+  <char width="1" page="0" x="44" y="11" xoffset="0" chnl="0" letter=":" height="3" yoffset="11" xadvance="2" id="58"/>
+  <char width="2" page="0" x="46" y="11" xoffset="0" chnl="0" letter=";" height="4" yoffset="11" xadvance="3" id="59"/>
+  <char width="2" page="0" x="49" y="10" xoffset="0" chnl="0" letter="&lt;" height="3" yoffset="10" xadvance="3" id="60"/>
+  <char width="4" page="0" x="52" y="10" xoffset="0" chnl="0" letter="=" height="3" yoffset="10" xadvance="5" id="61"/>
+  <char width="2" page="0" x="57" y="10" xoffset="0" chnl="0" letter=">" height="3" yoffset="10" xadvance="3" id="62"/>
+  <char width="4" page="0" x="1" y="17" xoffset="0" chnl="0" letter="?" height="5" yoffset="9" xadvance="5" id="63"/>
+  <char width="7" page="0" x="6" y="16" xoffset="0" chnl="0" letter="@" height="7" yoffset="8" xadvance="8" id="64"/>
+  <char width="4" page="0" x="14" y="17" xoffset="0" chnl="0" letter="A" height="5" yoffset="9" xadvance="5" id="65"/>
+  <char width="4" page="0" x="19" y="17" xoffset="0" chnl="0" letter="B" height="5" yoffset="9" xadvance="5" id="66"/>
+  <char width="3" page="0" x="24" y="17" xoffset="0" chnl="0" letter="C" height="5" yoffset="9" xadvance="4" id="67"/>
+  <char width="4" page="0" x="28" y="17" xoffset="0" chnl="0" letter="D" height="5" yoffset="9" xadvance="5" id="68"/>
+  <char width="3" page="0" x="33" y="17" xoffset="0" chnl="0" letter="E" height="5" yoffset="9" xadvance="4" id="69"/>
+  <char width="3" page="0" x="37" y="17" xoffset="0" chnl="0" letter="F" height="5" yoffset="9" xadvance="4" id="70"/>
+  <char width="4" page="0" x="41" y="17" xoffset="0" chnl="0" letter="G" height="5" yoffset="9" xadvance="5" id="71"/>
+  <char width="4" page="0" x="46" y="17" xoffset="0" chnl="0" letter="H" height="5" yoffset="9" xadvance="5" id="72"/>
+  <char width="3" page="0" x="51" y="17" xoffset="0" chnl="0" letter="I" height="5" yoffset="9" xadvance="4" id="73"/>
+  <char width="4" page="0" x="55" y="17" xoffset="0" chnl="0" letter="J" height="5" yoffset="9" xadvance="5" id="74"/>
+  <char width="4" page="0" x="1" y="24" xoffset="0" chnl="0" letter="K" height="5" yoffset="9" xadvance="5" id="75"/>
+  <char width="3" page="0" x="6" y="24" xoffset="0" chnl="0" letter="L" height="5" yoffset="9" xadvance="4" id="76"/>
+  <char width="5" page="0" x="10" y="24" xoffset="0" chnl="0" letter="M" height="5" yoffset="9" xadvance="6" id="77"/>
+  <char width="4" page="0" x="16" y="24" xoffset="0" chnl="0" letter="N" height="5" yoffset="9" xadvance="5" id="78"/>
+  <char width="4" page="0" x="21" y="24" xoffset="0" chnl="0" letter="O" height="5" yoffset="9" xadvance="5" id="79"/>
+  <char width="4" page="0" x="26" y="24" xoffset="0" chnl="0" letter="P" height="5" yoffset="9" xadvance="5" id="80"/>
+  <char width="4" page="0" x="31" y="24" xoffset="0" chnl="0" letter="Q" height="6" yoffset="9" xadvance="5" id="81"/>
+  <char width="4" page="0" x="36" y="24" xoffset="0" chnl="0" letter="R" height="5" yoffset="9" xadvance="5" id="82"/>
+  <char width="4" page="0" x="41" y="24" xoffset="0" chnl="0" letter="S" height="5" yoffset="9" xadvance="5" id="83"/>
+  <char width="3" page="0" x="46" y="24" xoffset="0" chnl="0" letter="T" height="5" yoffset="9" xadvance="4" id="84"/>
+  <char width="4" page="0" x="50" y="24" xoffset="0" chnl="0" letter="U" height="5" yoffset="9" xadvance="5" id="85"/>
+  <char width="4" page="0" x="55" y="24" xoffset="0" chnl="0" letter="V" height="5" yoffset="9" xadvance="5" id="86"/>
+  <char width="5" page="0" x="1" y="31" xoffset="0" chnl="0" letter="W" height="5" yoffset="9" xadvance="6" id="87"/>
+  <char width="4" page="0" x="7" y="31" xoffset="0" chnl="0" letter="X" height="5" yoffset="9" xadvance="5" id="88"/>
+  <char width="4" page="0" x="12" y="31" xoffset="0" chnl="0" letter="Y" height="5" yoffset="9" xadvance="5" id="89"/>
+  <char width="3" page="0" x="17" y="31" xoffset="0" chnl="0" letter="Z" height="5" yoffset="9" xadvance="4" id="90"/>
+  <char width="2" page="0" x="21" y="31" xoffset="0" chnl="0" letter="[" height="6" yoffset="9" xadvance="3" id="91"/>
+  <char width="3" page="0" x="24" y="31" xoffset="0" chnl="0" letter="\" height="5" yoffset="9" xadvance="4" id="92"/>
+  <char width="2" page="0" x="28" y="31" xoffset="0" chnl="0" letter="]" height="6" yoffset="9" xadvance="3" id="93"/>
+  <char width="3" page="0" x="31" y="31" xoffset="0" chnl="0" letter="^" height="2" yoffset="9" xadvance="4" id="94"/>
+  <char width="5" page="0" x="35" y="36" xoffset="0" chnl="0" letter="_" height="1" yoffset="14" xadvance="6" id="95"/>
+  <char width="2" page="0" x="41" y="31" xoffset="0" chnl="0" letter="`" height="2" yoffset="9" xadvance="3" id="96"/>
+  <char width="4" page="0" x="44" y="32" xoffset="0" chnl="0" letter="a" height="4" yoffset="10" xadvance="5" id="97"/>
+  <char width="4" page="0" x="49" y="31" xoffset="0" chnl="0" letter="b" height="5" yoffset="9" xadvance="5" id="98"/>
+  <char width="3" page="0" x="54" y="32" xoffset="0" chnl="0" letter="c" height="4" yoffset="10" xadvance="4" id="99"/>
+  <char width="4" page="0" x="58" y="31" xoffset="0" chnl="0" letter="d" height="5" yoffset="9" xadvance="5" id="100"/>
+  <char width="4" page="0" x="1" y="39" xoffset="0" chnl="0" letter="e" height="4" yoffset="10" xadvance="5" id="101"/>
+  <char width="3" page="0" x="6" y="38" xoffset="0" chnl="0" letter="f" height="5" yoffset="9" xadvance="4" id="102"/>
+  <char width="4" page="0" x="10" y="39" xoffset="0" chnl="0" letter="g" height="6" yoffset="10" xadvance="5" id="103"/>
+  <char width="4" page="0" x="15" y="38" xoffset="0" chnl="0" letter="h" height="5" yoffset="9" xadvance="5" id="104"/>
+  <char width="1" page="0" x="20" y="38" xoffset="0" chnl="0" letter="i" height="5" yoffset="9" xadvance="2" id="105"/>
+  <char width="2" page="0" x="22" y="38" xoffset="0" chnl="0" letter="j" height="7" yoffset="9" xadvance="3" id="106"/>
+  <char width="4" page="0" x="25" y="38" xoffset="0" chnl="0" letter="k" height="5" yoffset="9" xadvance="5" id="107"/>
+  <char width="1" page="0" x="30" y="38" xoffset="0" chnl="0" letter="l" height="5" yoffset="9" xadvance="2" id="108"/>
+  <char width="5" page="0" x="32" y="39" xoffset="0" chnl="0" letter="m" height="4" yoffset="10" xadvance="6" id="109"/>
+  <char width="4" page="0" x="38" y="39" xoffset="0" chnl="0" letter="n" height="4" yoffset="10" xadvance="5" id="110"/>
+  <char width="4" page="0" x="43" y="39" xoffset="0" chnl="0" letter="o" height="4" yoffset="10" xadvance="5" id="111"/>
+  <char width="4" page="0" x="48" y="39" xoffset="0" chnl="0" letter="p" height="6" yoffset="10" xadvance="5" id="112"/>
+  <char width="4" page="0" x="53" y="39" xoffset="0" chnl="0" letter="q" height="6" yoffset="10" xadvance="5" id="113"/>
+  <char width="3" page="0" x="58" y="39" xoffset="0" chnl="0" letter="r" height="4" yoffset="10" xadvance="4" id="114"/>
+  <char width="4" page="0" x="1" y="48" xoffset="0" chnl="0" letter="s" height="4" yoffset="10" xadvance="5" id="115"/>
+  <char width="3" page="0" x="6" y="47" xoffset="0" chnl="0" letter="t" height="5" yoffset="9" xadvance="4" id="116"/>
+  <char width="4" page="0" x="10" y="48" xoffset="0" chnl="0" letter="u" height="4" yoffset="10" xadvance="5" id="117"/>
+  <char width="4" page="0" x="15" y="48" xoffset="0" chnl="0" letter="v" height="4" yoffset="10" xadvance="5" id="118"/>
+  <char width="5" page="0" x="20" y="48" xoffset="0" chnl="0" letter="w" height="4" yoffset="10" xadvance="6" id="119"/>
+  <char width="3" page="0" x="26" y="48" xoffset="0" chnl="0" letter="x" height="4" yoffset="10" xadvance="4" id="120"/>
+  <char width="4" page="0" x="30" y="48" xoffset="0" chnl="0" letter="y" height="6" yoffset="10" xadvance="5" id="121"/>
+  <char width="4" page="0" x="35" y="48" xoffset="0" chnl="0" letter="z" height="4" yoffset="10" xadvance="5" id="122"/>
+  <char width="3" page="0" x="40" y="46" xoffset="0" chnl="0" letter="{" height="7" yoffset="8" xadvance="4" id="123"/>
+  <char width="1" page="0" x="44" y="47" xoffset="0" chnl="0" letter="|" height="5" yoffset="9" xadvance="2" id="124"/>
+  <char width="3" page="0" x="46" y="46" xoffset="0" chnl="0" letter="}" height="7" yoffset="8" xadvance="4" id="125"/>
+  <char width="5" page="0" x="50" y="48" xoffset="0" chnl="0" letter="~" height="3" yoffset="10" xadvance="6" id="126"/>
+ </chars>
+ <kernings count="0"/>
+</font>

@@ -1,5 +1,6 @@
 import Ticker from './Ticker';
 import GameState from './GameState';
+import Loader from './Loader';
 
 import { Renderer } from '@/components/display';
 import { InputManager } from '@/components/input';
@@ -25,6 +26,7 @@ export default class Game {
     this.state = new GameState({ game: this });
     this.input = new InputManager(this);
     this.sound = new SoundManager(this);
+    this.loader = new Loader(this);
 
     if (!this.renderer.isReady()) {
       const error = document.getElementById('error');
@@ -62,6 +64,7 @@ export default class Game {
     this.renderer = null;
     this.state = null;
     this.input = null;
+    this.loader = null;
   };
 
   start = () => {

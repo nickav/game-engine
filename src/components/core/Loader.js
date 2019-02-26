@@ -3,11 +3,12 @@ import * as twgl from 'twgl.js';
 import { parseTextureAtlas } from '@/helpers';
 
 export default class Loader {
-  loadSprites = (params, json) => {
-    if (typeof params === 'string') {
-      params = { src: params };
-    }
+  constructor(game) {
+    this.game = game;
+    this.gl = game.renderer.gl;
+  }
 
+  loadSprite = (src, params = {}) => {
     const { gl } = this;
 
     const defaultParams = {
@@ -15,25 +16,23 @@ export default class Loader {
       min: gl.NEAREST,
     };
 
-    const atlas = json ? parseTextureAtlas(json) : null;
-
-    return this.createTexture({ ...defaultParams, ...params }).then((result) => {
-      return [result, atlas];
-    });
+    return this.createTexture({ ...defaultParams, ...params, src });
   };
+
+  loadAtlas = (json) => parseTextureAtlas(json);
 
   createTexture = (params) => {
     const { gl } = this;
 
     return new Promise((res, rej) =>
-      twgl.createTexture(this.gl, params, (err, texture, image) => {
+      twgl.createTexture(gl, params, (err, texture, image) => {
         if (err) return rej(err);
         res({ texture, image, params });
       })
     );
   };
 
-  loadSounds = (sounds = []) =>  {
+  loadSounds = (sounds = []) => {
     return new Promise((res) => {
       const total = sounds.length;
       let finished = 0;
@@ -42,7 +41,7 @@ export default class Loader {
         if (++finished >= total) {
           res();
         }
-      }
+      };
 
       sounds.map((sound) => {
         const src = typeof sound === 'string' ? sound : sound.src;
@@ -61,5 +60,5 @@ export default class Loader {
         howl.on('loaderror', onLoadCallback);
       });
     });
-  }
+  };
 }

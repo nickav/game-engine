@@ -70,3 +70,41 @@ export const applyVertexColors = (
     array.push(vc[0], vc[1], vc[2], vc[3] * a);
   }
 };
+
+export const computeUVs = (e, { width, height }) => [
+  e.x / width,
+  e.y / height,
+  (e.x + e.width) / width,
+  (e.y + e.height) / height,
+];
+
+export const parseSpriteFont = (atlas, size) => {
+  const { common, chars, info } = atlas.font;
+
+  return {
+    fontFamily: info.face,
+    fontSize: parseInt(info.size, 10),
+    lineHeight: parseInt(common.lineHeight, 10),
+    charMap: chars.char.reduce((memo, char) => {
+      const key = char.letter.replace('space', ' ');
+
+      const ch = {
+        x: parseInt(char.x, 10),
+        y: parseInt(char.y, 10),
+        width: parseInt(char.width, 10),
+        height: parseInt(char.height, 10),
+        xadvance: parseInt(char.xadvance, 10),
+        xoffset: parseInt(char.xoffset, 10),
+        yoffset: parseInt(char.yoffset, 10),
+      };
+
+      memo[key] = {
+        ...ch,
+        uvs: computeUVs(ch, size),
+      };
+      return memo;
+    }, {}),
+    kernings: [],
+  };
+};
+
