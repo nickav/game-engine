@@ -1,4 +1,4 @@
-# text-invaders
+# game-engine
 
 ## Getting started
 

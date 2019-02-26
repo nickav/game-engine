@@ -37,6 +37,8 @@ game.state.set({
       Color.make(t, 0, 1),
     ]);
 
+    shapeBatch.line(0, 64, 200, 64);
+
     shapeBatch.flush();
 
     // draw sprite font
@@ -46,11 +48,27 @@ game.state.set({
     this.spriteFontBatch.add({
       x: 0,
       y: 0,
+      text: 'Hi, there!\nnewline test',
+      scalex: 1,
+      scaley: 1
+    });
+
+    this.spriteFontBatch.add({
+      x: 0,
+      y: 64,
       text: 'Hi, there!',
       scalex: 1,
       scaley: 1,
     });
 
-    spriteBatch.render();
+    this.spriteFontBatch.add({
+      x: 0,
+      y: 64,
+      text: 'Hi, there!',
+      scalex: 4,
+      scaley: 4,
+    });
+
+    spriteBatch.flush();
   },
 });

@@ -10,42 +10,73 @@ export default class SpriteFontRenderer {
     this.spriteBatch.setViewMatrix(viewMatrix);
   }
 
-  setFont(spriteFont) {
-    this.spriteFont = spriteFont;
-  }
-
   add(text) {
     const { spriteBatch, font } = this;
 
-    const str = text.text;
-    const scalex = text.scalex || 1;
-    const scaley = text.scaley || 1;
-    let x = text.x;
-    let y = text.y;
+    // create characters
+    const str = text.text.toString();
+    const letterSpacing = text.letterSpacing || 0;
+    const maxWidth = text.maxWidth || 0;
+
+    const pos = { x: 0, y: 0 };
+    const chars = [];
+    let prevChar = null;
 
     for (let i = 0, n = str.length; i < n; i++) {
-      const letter = str.charAt(i);
+      const char = str.charAt(i);
+      const charCode = str.charCodeAt(i);
 
-      if (letter === '\n') {
-        x = text.x;
-        y += font.lineHeight * scaley;
+      // handle newlines and max width
+      const isNewline = char === '\n' || char === '\r';
+
+      if (isNewline || (maxWidth > 0 && pos.x > maxWidth)) {
+        // go to next line
+        pos.x = 0;
+        pos.y += font.lineHeight;
+        prevChar = null
+
+        // skip rendering character
+        if (isNewline) {
+          continue;
+        }
+      }
+
+      const charData = font.chars[char];
+
+      if (!charData) {
         continue;
       }
 
-      const char = font.charMap[letter];
+      // add kerning
+      if (prevChar && charData.kerning[prevChar]) {
+        pos.x += charData.kerning[prevChar];
+      }
 
-      if (!char) continue;
-
-      spriteBatch.add({
-        width: char.width,
-        height: char.height,
-        uvs: char.uvs,
-        ...text,
-        x: x + char.xoffset * scalex,
-        y: y + char.yoffset * scaley,
+      chars.push({
+        width: charData.width,
+        height: charData.height,
+        uvs: charData.uvs,
+        x: pos.x + charData.xoffset + letterSpacing / 2,
+        y: pos.y + charData.yoffset,
       });
 
-      x += char.xadvance * scalex;
+      pos.x += charData.xadvance + letterSpacing;
+      prevChar = char;
+    }
+
+    // render characters
+    const scalex = text.scalex || 1;
+    const scaley = text.scaley || 1;
+
+    for (let i = 0, n = chars.length; i < n; i++) {
+      const char = chars[i];
+      spriteBatch.add({
+        ...char,
+        x: text.x + char.x * scalex,
+        y: text.y + char.y * scaley,
+        scalex,
+        scaley,
+      });
     }
   }
 }

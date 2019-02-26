@@ -79,32 +79,49 @@ export const computeUVs = (e, { width, height }) => [
 ];
 
 export const parseSpriteFont = (atlas, size) => {
-  const { common, chars, info } = atlas.font;
+  const { font } = atlas;
+  const { common, info } = font;
+  const kernings = font.kernings.kerning || [];
+
+  const chars = (font.chars.char || []).reduce((memo, char) => {
+    const key = char.letter.replace('space', ' ');
+
+    const rect = {
+      x: parseInt(char.x, 10),
+      y: parseInt(char.y, 10),
+      width: parseInt(char.width, 10),
+      height: parseInt(char.height, 10),
+    };
+
+    memo[key] = {
+      width: rect.width,
+      height: rect.height,
+      xadvance: parseInt(char.xadvance, 10),
+      xoffset: parseInt(char.xoffset, 10),
+      yoffset: parseInt(char.yoffset, 10),
+      uvs: computeUVs(rect, size),
+      kerning: {},
+    };
+
+    return memo;
+  }, {});
+
+  // parse kernings
+  for (let i = 0; i < kernings.length; i++) {
+    const kerning = kernings[i];
+    const first = parseInt(kerning.first, 10);
+    const second = parseInt(kerning.second, 10);
+    const amount = parseInt(kerning.amount, 10);
+
+    if (chars[second]) {
+      chars[second].kerning[first] = amount;
+    }
+  }
 
   return {
     fontFamily: info.face,
     fontSize: parseInt(info.size, 10),
     lineHeight: parseInt(common.lineHeight, 10),
-    charMap: chars.char.reduce((memo, char) => {
-      const key = char.letter.replace('space', ' ');
-
-      const ch = {
-        x: parseInt(char.x, 10),
-        y: parseInt(char.y, 10),
-        width: parseInt(char.width, 10),
-        height: parseInt(char.height, 10),
-        xadvance: parseInt(char.xadvance, 10),
-        xoffset: parseInt(char.xoffset, 10),
-        yoffset: parseInt(char.yoffset, 10),
-      };
-
-      memo[key] = {
-        ...ch,
-        uvs: computeUVs(ch, size),
-      };
-      return memo;
-    }, {}),
-    kernings: [],
+    chars,
   };
 };
-

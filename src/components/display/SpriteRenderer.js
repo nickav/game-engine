@@ -91,6 +91,11 @@ export default class SpriteRenderer {
       return;
     }
 
+    if (this.batchSize >= this.MAX_SPRITES) {
+      console.warn('SpriteRenderer: batch full, auto-flushing...');
+      this.flush();
+    }
+
     const {
       arrays: { position, texcoord, color },
     } = this;
