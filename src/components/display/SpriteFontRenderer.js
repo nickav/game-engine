@@ -22,6 +22,10 @@ export default class SpriteFontRenderer {
     const pos = { x: 0, y: 0 };
     const chars = [];
     let prevChar = null;
+    let line = 0;
+    const lineWidths = [];
+    let lastLineWidth = 0;
+    let maxLineWidth = 0;
 
     for (let i = 0, n = str.length; i < n; i++) {
       const char = str.charAt(i);
@@ -30,9 +34,12 @@ export default class SpriteFontRenderer {
       // handle newlines and max width
       if (char === '\n' || (maxWidth > 0 && pos.x > maxWidth)) {
         // go to next line
+        lineWidths.push(lastLineWidth);
+        maxLineWidth = Math.max(maxLineWidth, lastLineWidth);
         pos.x = 0;
         pos.y += lineHeight;
         prevChar = null;
+        line++;
 
         // skip adding character
         if (char === '\n') {
@@ -57,22 +64,53 @@ export default class SpriteFontRenderer {
         uvs: charData.uvs,
         x: pos.x + charData.xoffset + letterSpacing / 2,
         y: pos.y + charData.yoffset - lineHeight / 2,
+        line,
       });
 
       pos.x += charData.xadvance + letterSpacing;
+      lastLineWidth = pos.x;
       prevChar = char;
+    }
+
+    lineWidths.push(lastLineWidth);
+    maxLineWidth = Math.max(maxLineWidth, lastLineWidth);
+
+    if (text.width) {
+      maxLineWidth = text.width;
+    }
+
+    const alignOffests = [];
+    const align = text.align || 'left';
+
+    for (let i = 0; i <= line; i++) {
+      let alignOffset = 0;
+
+      if (align === 'right') {
+        alignOffset = maxLineWidth - lineWidths[i];
+      } else if (align === 'center') {
+        alignOffset = (maxLineWidth - lineWidths[i]) / 2;
+      }
+
+      alignOffests.push(alignOffset);
     }
 
     // render characters
     const scalex = text.scalex || 1;
     const scaley = text.scaley || 1;
 
+    const anchorx = text.anchorx || 0;
+    const anchory = text.anchory || 0;
+    const textWidth = maxLineWidth * scalex;
+    const textHeight = (pos.y + lineHeight) * scaley;
+    const offsetx = textWidth * anchorx;
+    const offsety = textHeight * anchory;
+
     for (let i = 0, n = chars.length; i < n; i++) {
       const char = chars[i];
       spriteBatch.add({
         ...char,
-        x: text.x + char.x * scalex,
-        y: text.y + char.y * scaley,
+        x: text.x + (char.x + alignOffests[chars[i].line]) * scalex + offsetx,
+        y: text.y + char.y * scaley + offsety,
         scalex,
         scaley,
       });

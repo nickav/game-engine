@@ -51,16 +51,22 @@ game.state.set({
       x: 0,
       y: 0,
       text: 'Hi, there!\nnewline test',
-      scalex: 1,
-      scaley: 1
+      align: 'center',
+      width: 400,
     });
 
     this.spriteFontBatch.add({
       x: 0,
       y: 64,
       text: 'Hi, there!',
-      scalex: 1,
-      scaley: 1,
+    });
+
+    this.spriteFontBatch.add({
+      x: 0,
+      y: 64,
+      text: "I'm right aligned!",
+      align: 'right',
+      width: 400,
     });
 
     this.spriteFontBatch.add({
