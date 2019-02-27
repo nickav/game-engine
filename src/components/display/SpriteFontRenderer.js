@@ -15,8 +15,9 @@ export default class SpriteFontRenderer {
 
     // create characters
     const str = text.text.toString().replace(/(?:\r\n|\r)/g, '\n');
-    const letterSpacing = text.letterSpacing || 0;
-    const maxWidth = text.maxWidth || 0;
+    const letterSpacing =
+      typeof text.letterSpacing === 'number' ? text.letterSpacing : 0;
+    const maxWidth = typeof text.maxWidth === 'number' ? text.maxWidth : 0;
     const lineHeight = text.lineHeight || font.lineHeight || 0;
 
     const pos = { x: 0, y: 0 };
@@ -75,11 +76,12 @@ export default class SpriteFontRenderer {
     lineWidths.push(lastLineWidth);
     maxLineWidth = Math.max(maxLineWidth, lastLineWidth);
 
-    const scalex = text.scalex || 1;
-    const scaley = text.scaley || 1;
+    const scalex = typeof text.scalex === 'number' ? text.scalex : 1;
+    const scaley = typeof text.scaley === 'number' ? text.scaley : 1;
+    const width = typeof text.width === 'number' ? text.width : maxWidth;
 
-    if (text.width) {
-      maxLineWidth = text.width / scalex;
+    if (width) {
+      maxLineWidth = width / scalex;
     }
 
     // compute horizontal offsets
@@ -99,13 +101,13 @@ export default class SpriteFontRenderer {
     }
 
     // render characters
-    const anchorx = text.anchorx || 0;
-    const anchory = text.anchory || 0;
+    const anchorx = typeof text.anchorx === 'number' ? text.anchorx : 0;
+    const anchory = typeof text.anchory === 'number' ? text.anchory : 0;
     const textWidth = maxLineWidth * scalex;
     const textHeight = (pos.y + lineHeight) * scaley;
 
     // vertical align
-    const height = text.height || 0;
+    const height = typeof text.height === 'number' ? text.height : 0;
     const valign = text.valign || 'top';
     let heightOffset = 0;
 
