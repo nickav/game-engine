@@ -107,7 +107,7 @@ export const parseSpriteFont = (atlas, size) => {
   }, {});
 
   // parse kernings
-  for (let i = 0; i < kernings.length; i++) {
+  for (let i = 0, n = kernings.length; i < n; i++) {
     const kerning = kernings[i];
     const first = parseInt(kerning.first, 10);
     const second = parseInt(kerning.second, 10);

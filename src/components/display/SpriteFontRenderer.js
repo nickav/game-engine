@@ -14,9 +14,10 @@ export default class SpriteFontRenderer {
     const { spriteBatch, font } = this;
 
     // create characters
-    const str = text.text.toString();
+    const str = text.text.toString().replace(/(?:\r\n|\r)/g, '\n');
     const letterSpacing = text.letterSpacing || 0;
     const maxWidth = text.maxWidth || 0;
+    const lineHeight = text.lineHeight || font.lineHeight || 0;
 
     const pos = { x: 0, y: 0 };
     const chars = [];
@@ -27,16 +28,14 @@ export default class SpriteFontRenderer {
       const charCode = str.charCodeAt(i);
 
       // handle newlines and max width
-      const isNewline = char === '\n' || char === '\r';
-
-      if (isNewline || (maxWidth > 0 && pos.x > maxWidth)) {
+      if (char === '\n' || (maxWidth > 0 && pos.x > maxWidth)) {
         // go to next line
         pos.x = 0;
-        pos.y += font.lineHeight;
-        prevChar = null
+        pos.y += lineHeight;
+        prevChar = null;
 
-        // skip rendering character
-        if (isNewline) {
+        // skip adding character
+        if (char === '\n') {
           continue;
         }
       }
@@ -57,7 +56,7 @@ export default class SpriteFontRenderer {
         height: charData.height,
         uvs: charData.uvs,
         x: pos.x + charData.xoffset + letterSpacing / 2,
-        y: pos.y + charData.yoffset,
+        y: pos.y + charData.yoffset - lineHeight / 2,
       });
 
       pos.x += charData.xadvance + letterSpacing;

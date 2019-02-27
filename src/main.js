@@ -37,7 +37,9 @@ game.state.set({
       Color.make(t, 0, 1),
     ]);
 
-    shapeBatch.line(0, 64, 200, 64);
+    // guide lines
+    shapeBatch.line(0, 64, 400, 64);
+    shapeBatch.line(0, 64 + 7 * 4, 400, 64 + 7 * 4);
 
     shapeBatch.flush();
 
@@ -64,7 +66,7 @@ game.state.set({
     this.spriteFontBatch.add({
       x: 0,
       y: 64,
-      text: 'Hi, there!',
+      text: 'Hi, there! @4x j {}\nNEEEWXT LINE!{}{}}{}{}{}',
       scalex: 4,
       scaley: 4,
     });
