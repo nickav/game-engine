@@ -63,7 +63,7 @@ export default class SpriteFontRenderer {
         height: charData.height,
         uvs: charData.uvs,
         x: pos.x + charData.xoffset + letterSpacing / 2,
-        y: pos.y + charData.yoffset - lineHeight / 2,
+        y: pos.y + charData.yoffset - lineHeight / 2 - 1,
         line,
       });
 
@@ -75,10 +75,14 @@ export default class SpriteFontRenderer {
     lineWidths.push(lastLineWidth);
     maxLineWidth = Math.max(maxLineWidth, lastLineWidth);
 
+    const scalex = text.scalex || 1;
+    const scaley = text.scaley || 1;
+
     if (text.width) {
-      maxLineWidth = text.width;
+      maxLineWidth = text.width / scalex;
     }
 
+    // compute horizontal offsets
     const alignOffests = [];
     const align = text.align || 'left';
 
@@ -95,13 +99,22 @@ export default class SpriteFontRenderer {
     }
 
     // render characters
-    const scalex = text.scalex || 1;
-    const scaley = text.scaley || 1;
-
     const anchorx = text.anchorx || 0;
     const anchory = text.anchory || 0;
     const textWidth = maxLineWidth * scalex;
     const textHeight = (pos.y + lineHeight) * scaley;
+
+    // vertical align
+    const height = text.height || 0;
+    const valign = text.valign || 'top';
+    let heightOffset = 0;
+
+    if (valign === 'center') {
+      heightOffset = (height - textHeight) / 2;
+    } else if (valign === 'bottom') {
+      heightOffset = height - textHeight;
+    }
+
     const offsetx = textWidth * anchorx;
     const offsety = textHeight * anchory;
 
@@ -110,7 +123,7 @@ export default class SpriteFontRenderer {
       spriteBatch.add({
         ...char,
         x: text.x + (char.x + alignOffests[chars[i].line]) * scalex + offsetx,
-        y: text.y + char.y * scaley + offsety,
+        y: text.y + char.y * scaley + offsety + heightOffset,
         scalex,
         scaley,
       });

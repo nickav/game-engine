@@ -37,10 +37,6 @@ game.state.set({
       Color.make(t, 0, 1),
     ]);
 
-    // guide lines
-    shapeBatch.line(0, 64, 400, 64);
-    shapeBatch.line(0, 64 + 7 * 4, 400, 64 + 7 * 4);
-
     shapeBatch.flush();
 
     // draw sprite font
@@ -50,31 +46,21 @@ game.state.set({
     this.spriteFontBatch.add({
       x: 0,
       y: 0,
-      text: 'Hi, there!\nnewline test',
-      align: 'center',
-      width: 400,
+      text: `FPS: ${this.game.getFPS()}`,
+      scalex: 2,
+      scaley: 2,
     });
 
     this.spriteFontBatch.add({
       x: 0,
-      y: 64,
-      text: 'Hi, there!',
-    });
-
-    this.spriteFontBatch.add({
-      x: 0,
-      y: 64,
-      text: "I'm right aligned!",
-      align: 'right',
-      width: 400,
-    });
-
-    this.spriteFontBatch.add({
-      x: 0,
-      y: 64,
-      text: 'Hi, there! @4x j {}\nNEEEWXT LINE!{}{}}{}{}{}',
+      y: 0,
+      text: `Hello!\nYou Rock!`,
       scalex: 4,
       scaley: 4,
+      width: re.width,
+      height: re.height,
+      align: 'center',
+      valign: 'center',
     });
 
     spriteBatch.flush();
