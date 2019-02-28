@@ -46,6 +46,18 @@ export default class ShapeRenderer {
     };
   }
 
+  destroy() {
+    const { gl, programInfo, bufferInfo } = this;
+    gl.deleteProgram(programInfo.program);
+    this.programInfo = null;
+
+    const { attribs } = bufferInfo;
+    gl.deleteBuffer(attribs.position.buffer);
+    gl.deleteBuffer(attribs.color.buffer);
+    this.bufferInfo = null;
+    this.arrays = null;
+  }
+
   setViewMatrix(viewMatrix) {
     this.uniforms.u_viewMatrix = viewMatrix;
   }

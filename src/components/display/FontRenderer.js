@@ -13,6 +13,13 @@ export default class FontRenderer {
     this.batch = [];
   }
 
+  destroy() {
+    this.cache = null;
+    this.batch = null;
+    this.spriteRenderer.destroy();
+    this.spriteRenderer = null;
+  }
+
   setViewMatrix(viewMatrix) {
     this.spriteRenderer.setViewMatrix(viewMatrix);
   }

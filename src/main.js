@@ -1,7 +1,7 @@
 import { Game, Color, SpriteFontRenderer } from '@';
 
-import fontAtlas from '@public/tinyunicode.json';
-import fontSprite from '@public/tinyunicode.png';
+import tinyunicodeAtlas from '@public/tinyunicode.json';
+import tinyunicodeSprite from '@public/tinyunicode.png';
 
 const canvas = document.getElementById('view');
 const game = new Game(canvas);
@@ -10,20 +10,62 @@ window.game = game;
 
 game.setBackgroundColor(0, 0, 0);
 
+// loading state
 game.state.set({
   create() {
-    this.tex = null;
+    game.loader.add('tinyunicode', tinyunicodeSprite).load((res) => {
+      setTimeout(() => game.state.set(new Main(res)));
+    });
+  },
 
-    this.game.loader
-      .loadSprite(fontSprite)
-      .then((res) => (this.tex = res.texture));
+  render(re) {
+    const { shapeBatch, width, height } = re;
 
+    const w2 = width * 0.5;
+    const h2 = height * 0.5;
+    const bar = { w: 128, h: 16 };
+
+    //const t = (game.loop.time / 1000) % 1;
+    const t = game.loader.percent;
+    const c1 = Color.make(1, 0, 1);
+    const c2 = Color.make(1, 1, 1);
+    const fill = [c1, c2, c2, c1];
+
+    // fill
+    shapeBatch.rectangle(
+      w2 - bar.w,
+      h2 - bar.h,
+      w2 - bar.w + 2 * t * bar.w,
+      h2 + bar.h,
+      fill
+    );
+
+    // outline
+    shapeBatch.hollowRect(
+      w2 - bar.w,
+      h2 - bar.h,
+      w2 + bar.w,
+      h2 + bar.h,
+      6,
+      Color.BLACK
+    );
+    shapeBatch.hollowRect(w2 - bar.w, h2 - bar.h, w2 + bar.w, h2 + bar.h, 2);
+
+    shapeBatch.flush();
+  },
+});
+
+class Main {
+  constructor(assets) {
+    this.tex = assets.tinyunicode.texture;
+  }
+
+  create() {
     this.spriteFontBatch = new SpriteFontRenderer(
       this.game.renderer.spriteBatch,
-      fontAtlas
+      tinyunicodeAtlas
     );
-    console.log(this.spriteFontBatch);
-  },
+  }
 
   render(re) {
     // draw triangle
@@ -64,5 +106,5 @@ game.state.set({
     });
 
     spriteBatch.flush();
-  },
-});
+  }
+}

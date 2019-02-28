@@ -45,7 +45,7 @@ export default class Game {
     this.renderer.create();
     this.input.create();
 
-    this.state.trigger('create');
+    this.state.trigger('create', this);
 
     this.start();
   };

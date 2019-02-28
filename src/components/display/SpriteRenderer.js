@@ -67,7 +67,10 @@ export default class SpriteRenderer {
     const { attribs } = bufferInfo;
     gl.deleteBuffer(attribs.position.buffer);
     gl.deleteBuffer(attribs.texcoord.buffer);
+    gl.deleteBuffer(attribs.color.buffer);
     this.bufferInfo = null;
+
+    this.arrays = null;
   }
 
   setTexture(texture) {
