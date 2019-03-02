@@ -71,12 +71,13 @@ class Main {
     // draw triangle
     const { shapeBatch } = re;
 
-    const t = (this.game.loop.time / 1000) % 1;
+    const t = (this.game.loop.time / 1000) % 2;
+    const c = t <= 1 ? t : 2 - t;
 
     shapeBatch.triangle(0, 0, re.width, re.height, 0, re.height, [
       Color.make(1, 0, 0),
-      Color.make(t, 1, 0),
-      Color.make(t, 0, 1),
+      Color.make(c, 1, 0),
+      Color.make(c, 0, 1),
     ]);
 
     shapeBatch.flush();
