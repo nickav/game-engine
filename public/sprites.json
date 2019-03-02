@@ -2,24 +2,24 @@
   "meta": {
     "image": "sprites.png",
     "size": {
-      "w": 42,
-      "h": 71
+      "w": 126,
+      "h": 64
     },
     "scale": 1
   },
   "frames": {
     "bunny.png": {
       "frame": {
-        "x": 0,
-        "y": 34,
+        "x": 100,
+        "y": 0,
         "w": 26,
         "h": 37
       },
       "rotated": false,
       "trimmed": false,
       "spriteSourceSize": {
-        "x": 0,
-        "y": 34,
+        "x": 100,
+        "y": 0,
         "w": 26,
         "h": 37
       },
@@ -30,7 +30,7 @@
     },
     "pink.png": {
       "frame": {
-        "x": 0,
+        "x": 66,
         "y": 0,
         "w": 32,
         "h": 32
@@ -38,7 +38,7 @@
       "rotated": false,
       "trimmed": false,
       "spriteSourceSize": {
-        "x": 0,
+        "x": 66,
         "y": 0,
         "w": 32,
         "h": 32
@@ -50,22 +50,42 @@
     },
     "playerDown.png": {
       "frame": {
-        "x": 34,
-        "y": 0,
+        "x": 100,
+        "y": 39,
         "w": 8,
         "h": 8
       },
       "rotated": false,
       "trimmed": false,
       "spriteSourceSize": {
-        "x": 34,
-        "y": 0,
+        "x": 100,
+        "y": 39,
         "w": 8,
         "h": 8
       },
       "sourceSize": {
         "w": 8,
         "h": 8
+      }
+    },
+    "tinyunicode.png": {
+      "frame": {
+        "x": 0,
+        "y": 0,
+        "w": 64,
+        "h": 64
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 64,
+        "h": 64
+      },
+      "sourceSize": {
+        "w": 64,
+        "h": 64
       }
     }
   }

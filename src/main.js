@@ -1,7 +1,8 @@
 import { Game, Color, SpriteFontRenderer } from '@';
 
 import tinyunicodeAtlas from '@public/tinyunicode.json';
-import tinyunicodeSprite from '@public/tinyunicode.png';
+import spritesAtlas from '@public/sprites.json';
+import sprites from '@public/sprites.png';
 
 const canvas = document.getElementById('view');
 const game = new Game(canvas);
@@ -13,9 +14,9 @@ game.setBackgroundColor(0, 0, 0);
 // loading state
 game.state.set({
   create() {
-    game.loader.add('tinyunicode', tinyunicodeSprite).load((res) => {
-      setTimeout(() => game.state.set(new Main(res)));
-    });
+    game.loader
+      .add('sprites', sprites)
+      .load((res) => game.state.set(new Main(res)));
   },
 
   render(re) {
@@ -57,14 +58,17 @@ game.state.set({
 
 class Main {
   constructor(assets) {
-    this.tex = assets.tinyunicode.texture;
+    this.tex = assets.sprites.texture;
+
+    this.spriteFontBatch = new SpriteFontRenderer(
+      game.renderer.spriteBatch,
+      spritesAtlas
+    );
+
+    this.spriteFontBatch.setFont('tinyunicode.png', tinyunicodeAtlas);
   }
 
   create() {
-    this.spriteFontBatch = new SpriteFontRenderer(
-      this.game.renderer.spriteBatch,
-      tinyunicodeAtlas
-    );
   }
 
   render(re) {

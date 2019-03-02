@@ -1,9 +1,18 @@
 import { parseSpriteFont } from '@/helpers/gl';
 
 export default class SpriteFontRenderer {
-  constructor(spriteBatch, atlas) {
+  constructor(spriteBatch, spriteAtlas) {
     this.spriteBatch = spriteBatch;
-    this.font = parseSpriteFont(atlas, { width: 64, height: 64 });
+    this.spriteAtlas = spriteAtlas;
+  }
+
+  setFont(name, fontAtlas) {
+    const { w: width, h: height } = this.spriteAtlas.meta.size;
+    const frame = this.spriteAtlas.frames[name].frame;
+    const size = { width, height };
+    const offset = { x: frame.x, y: frame.y };
+
+    this.font = parseSpriteFont(fontAtlas, size, offset);
   }
 
   setViewMatrix(viewMatrix) {

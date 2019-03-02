@@ -78,7 +78,7 @@ export const computeUVs = (e, { width, height }) => [
   (e.y + e.height) / height,
 ];
 
-export const parseSpriteFont = (atlas, size) => {
+export const parseSpriteFont = (atlas, size, offset = { x: 0, y: 0 }) => {
   const { font } = atlas;
   const { common, info } = font;
   const kernings = font.kernings.kerning || [];
@@ -87,8 +87,8 @@ export const parseSpriteFont = (atlas, size) => {
     const key = char.letter.replace('space', ' ');
 
     const rect = {
-      x: parseInt(char.x, 10),
-      y: parseInt(char.y, 10),
+      x: offset.x + parseInt(char.x, 10),
+      y: offset.y + parseInt(char.y, 10),
       width: parseInt(char.width, 10),
       height: parseInt(char.height, 10),
     };
