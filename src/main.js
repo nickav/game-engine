@@ -78,12 +78,16 @@ class Main {
 
     const rot = t * Math.PI * 2;
 
-    shapeBatch.hollowRect(10, 10, 100, 100, 10, Color.make(0, 1, 0), 1, 0);
-    shapeBatch.hollowRect(10, 10, 100, 100, 10, Color.make(1, 0, 0), 1, 1);
-    shapeBatch.hollowRect(10, 10, 100, 100);
+    shapeBatch.hollowRect(10, 10, 100, 100, 8, Color.make(0, 1, 0), 1, 2);
+    shapeBatch.hollowRect(10, 10, 100, 100, 1, Color.WHITE, 1, 2);
 
+    shapeBatch.circle(280, 100, 20);
+
+    shapeBatch.arc(200, 200, 80, 0, Math.PI, Color.make(1, 0, 1), 1);
+
+    shapeBatch.circle(120, 100, 10 + t * 10);
     shapeBatch.hollowArc(
-      100,
+      120,
       100,
       t * 40,
       rot,

@@ -8,6 +8,8 @@ import vertexShader from '@/shaders/shape.vert';
 import fragmentShader from '@/shaders/shape.frag';
 
 const WHITE = [1, 1, 1, 1];
+const TWO_PI = Math.PI * 2;
+const PI_2 = Math.PI * 0.5;
 
 export default class ShapeRenderer {
   constructor(gl) {
@@ -96,6 +98,19 @@ export default class ShapeRenderer {
   }
 
   circle(x, y, radius, fill = WHITE, alpha = 1, precision = 64) {
+    this.arc(x, y, radius, 0, TWO_PI, fill, alpha, precision);
+  }
+
+  arc(
+    x,
+    y,
+    radius,
+    startAngle = 0,
+    endAngle = TWO_PI,
+    fill = WHITE,
+    alpha = 1,
+    precision = 64
+  ) {
     const {
       arrays: { position, color },
     } = this;
@@ -105,10 +120,10 @@ export default class ShapeRenderer {
     const c = [fill[0], fill[1], fill[2], fill[3] * alpha];
 
     const { sin, cos } = Math;
-    const step = (Math.PI * 2) / precision;
+    const step = (endAngle - startAngle) / precision;
 
     // cache previous point on circle
-    let angle = 0;
+    let angle = startAngle;
     let x1 = cos(angle) * radius;
     let y1 = sin(angle) * radius;
 
@@ -143,8 +158,8 @@ export default class ShapeRenderer {
     const angle = Math.atan2(y1 - y2, x1 - x2);
     const radius = stroke * 0.5;
 
-    const sin = Math.sin(angle + Math.PI * 0.5) * radius;
-    const cos = Math.cos(angle + Math.PI * 0.5) * radius;
+    const sin = Math.sin(angle + PI_2) * radius;
+    const cos = Math.cos(angle + PI_2) * radius;
 
     // position
     position.push(x1 - cos, y1 - sin, x1 + cos, y1 + sin, x2 + cos, y2 + sin);
@@ -161,7 +176,7 @@ export default class ShapeRenderer {
     y,
     radius,
     startAngle = 0,
-    endAngle = Math.PI * 2,
+    endAngle = TWO_PI,
     stroke = 1,
     fill = WHITE,
     alpha = 1,
@@ -197,7 +212,7 @@ export default class ShapeRenderer {
     y,
     radius,
     startAngle = 0,
-    endAngle = Math.PI * 2,
+    endAngle = TWO_PI,
     stroke = 1,
     fill = WHITE,
     alpha = 1,
@@ -231,42 +246,26 @@ export default class ShapeRenderer {
   hollowRect(x1, y1, x2, y2, stroke = 1, fill = WHITE, alpha = 1, style = 0) {
     if (alpha <= 0) return;
 
-    const hs = stroke * 0.5;
-
+    //rectangle(x1, y1, x2, y2, fill = WHITE, alpha = 1) {
     if (style === 1) {
       // outset
-      this.line(
-        x1 - stroke,
-        y1 - hs,
-        x2 + stroke,
-        y1 - hs,
-        stroke,
-        fill,
-        alpha
-      ); // top
-      this.line(
-        x1 - stroke,
-        y2 + hs,
-        x2 + stroke,
-        y2 + hs,
-        stroke,
-        fill,
-        alpha
-      ); // bottom
-      this.line(x1 - hs, y1, x1 - hs, y2, stroke, fill, alpha); // left
-      this.line(x2 + hs, y1, x2 + hs, y2, stroke, fill, alpha); // right
+      this.rectangle(x1 - stroke, y1 - stroke, x2 + stroke, y1, fill, alpha); // top
+      this.rectangle(x1 - stroke, y2, x2 + stroke, y2 + stroke, fill, alpha); // bottom
+      this.rectangle(x1 - stroke, y1, x1, y2, fill, alpha); // left
+      this.rectangle(x2, y1, x2 + stroke, y2, fill, alpha); // right
     } else if (style === 2) {
       // middle
-      this.line(x1 - hs, y1, x2 + hs, y1, stroke, fill, alpha); // top
-      this.line(x1 - hs, y2, x2 + hs, y2, stroke, fill, alpha); // bottom
-      this.line(x1, y1, x1, y2, stroke, fill, alpha); // left
-      this.line(x2, y1, x2, y2, stroke, fill, alpha); // right
+      const hs = stroke * 0.5;
+      this.rectangle(x1 - hs, y1 - hs, x2 + hs, y1 + hs, fill, alpha); // top
+      this.rectangle(x1 - hs, y2 - hs, x2 + hs, y2 + hs, fill, alpha); // bottom
+      this.rectangle(x1 - hs, y1, x1 + hs, y2, fill, alpha); // left
+      this.rectangle(x2 - hs, y1, x2 + hs, y2, fill, alpha); // right
     } else {
-      // inset
-      this.line(x1, y1 + hs, x2, y1 + hs, stroke, fill, alpha); // top
-      this.line(x1, y2 - hs, x2, y2 - hs, stroke, fill, alpha); // bottom
-      this.line(x1 + hs, y1, x1 + hs, y2, stroke, fill, alpha); // left
-      this.line(x2 - hs, y1, x2 - hs, y2, stroke, fill, alpha); // right
+      // inset (default)
+      this.rectangle(x1, y1, x2, y1 + stroke, fill, alpha); // top
+      this.rectangle(x1, y2 - stroke, x2, y2, fill, alpha); // bottom
+      this.rectangle(x1, y1 + stroke, x1 + stroke, y2 - stroke, fill, alpha); // left
+      this.rectangle(x2 - stroke, y1 + stroke, x2, y2 - stroke, fill, alpha); // right
     }
   }
 
