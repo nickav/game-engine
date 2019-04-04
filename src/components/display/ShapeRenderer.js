@@ -192,18 +192,82 @@ export default class ShapeRenderer {
     }
   }
 
-  hollowRect(x1, y1, x2, y2, stroke = 1, fill = WHITE, alpha = 1) {
+  hollowLineArc(
+    x,
+    y,
+    radius,
+    startAngle = 0,
+    endAngle = Math.PI * 2,
+    stroke = 1,
+    fill = WHITE,
+    alpha = 1,
+    precision = 64
+  ) {
+    if (precision < 0 || alpha <= 0) return;
+
+    const c = [fill[0], fill[1], fill[2], fill[3] * alpha];
+
+    const { sin, cos } = Math;
+    const step = (endAngle - startAngle) / precision;
+
+    // cache previous point on circle
+    let angle = startAngle;
+    let x1 = cos(angle) * radius;
+    let y1 = sin(angle) * radius;
+
+    for (let i = 0; i < precision; i++) {
+      angle += step;
+
+      const x2 = cos(angle) * radius;
+      const y2 = sin(angle) * radius;
+
+      this.line(x + x1, y + y1, x + x2, y + y2, stroke, fill, alpha);
+
+      x1 = x2;
+      y1 = y2;
+    }
+  }
+
+  hollowRect(x1, y1, x2, y2, stroke = 1, fill = WHITE, alpha = 1, style = 0) {
     if (alpha <= 0) return;
 
-    const halfStroke = stroke * 0.5;
-    // top
-    this.line(x1 - halfStroke, y1, x2 + halfStroke, y1, stroke, fill, alpha);
-    // bottom
-    this.line(x1 - halfStroke, y2, x2 + halfStroke, y2, stroke, fill, alpha);
-    // left
-    this.line(x1, y1, x1, y2, stroke, fill, alpha);
-    // right
-    this.line(x2, y1, x2, y2, stroke, fill, alpha);
+    const hs = stroke * 0.5;
+
+    if (style === 1) {
+      // outset
+      this.line(
+        x1 - stroke,
+        y1 - hs,
+        x2 + stroke,
+        y1 - hs,
+        stroke,
+        fill,
+        alpha
+      ); // top
+      this.line(
+        x1 - stroke,
+        y2 + hs,
+        x2 + stroke,
+        y2 + hs,
+        stroke,
+        fill,
+        alpha
+      ); // bottom
+      this.line(x1 - hs, y1, x1 - hs, y2, stroke, fill, alpha); // left
+      this.line(x2 + hs, y1, x2 + hs, y2, stroke, fill, alpha); // right
+    } else if (style === 2) {
+      // middle
+      this.line(x1 - hs, y1, x2 + hs, y1, stroke, fill, alpha); // top
+      this.line(x1 - hs, y2, x2 + hs, y2, stroke, fill, alpha); // bottom
+      this.line(x1, y1, x1, y2, stroke, fill, alpha); // left
+      this.line(x2, y1, x2, y2, stroke, fill, alpha); // right
+    } else {
+      // inset
+      this.line(x1, y1 + hs, x2, y1 + hs, stroke, fill, alpha); // top
+      this.line(x1, y2 - hs, x2, y2 - hs, stroke, fill, alpha); // bottom
+      this.line(x1 + hs, y1, x1 + hs, y2, stroke, fill, alpha); // left
+      this.line(x2 - hs, y1, x2 - hs, y2, stroke, fill, alpha); // right
+    }
   }
 
   render() {
