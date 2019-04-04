@@ -202,22 +202,49 @@ export default class ShapeRenderer {
     const c = [fill[0], fill[1], fill[2], fill[3] * alpha];
 
     const step = (endAngle - startAngle) / precision;
+    const hs = stroke * 0.5;
+    const r1 = radius - hs;
+    const r2 = radius + hs;
 
-    // cache previous point on circle
+    // cache previous points on circle
     let angle = startAngle;
-    let x1 = cos(angle) * radius;
-    let y1 = sin(angle) * radius;
+
+    const ca = cos(angle);
+    const sa = sin(angle);
+
+    let x1 = ca * r1;
+    let y1 = sa * r1;
+    let x2 = ca * r2;
+    let y2 = sa * r2;
 
     for (let i = 0; i < precision; i++) {
       angle += step;
 
-      const x2 = cos(angle) * radius;
-      const y2 = sin(angle) * radius;
+      const ca = cos(angle);
+      const sa = sin(angle);
 
-      this.line(x + x1, y + y1, x + x2, y + y2, stroke, fill, alpha);
+      const x3 = ca * r1;
+      const y3 = sa * r1;
+      const x4 = ca * r2;
+      const y4 = sa * r2;
 
-      x1 = x2;
-      y1 = y2;
+      this.trapezoid(
+        x + x1,
+        y + y1,
+        x + x3,
+        y + y3,
+        x + x2,
+        y + y2,
+        x + x4,
+        y + y4,
+        fill,
+        alpha
+      );
+
+      x1 = x3;
+      y1 = y3;
+      x2 = x4;
+      y2 = y4;
     }
   }
 
