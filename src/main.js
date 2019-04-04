@@ -98,6 +98,21 @@ class Main {
       8
     );
 
+    const w1 = 50;
+    const w2 = 100;
+    const h = 100;
+    shapeBatch.trapezoid(
+      200 - w1,
+      220,
+      200 + w1,
+      220,
+      200 - w2,
+      220 + h,
+      200 + w2,
+      220 + h,
+      Color.make(1, 0, 0)
+    );
+
     shapeBatch.flush();
 
     // draw sprite font

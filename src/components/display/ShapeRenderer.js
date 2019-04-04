@@ -7,9 +7,10 @@ import { applyVertexColors } from '@/helpers/gl';
 import vertexShader from '@/shaders/shape.vert';
 import fragmentShader from '@/shaders/shape.frag';
 
-const WHITE = [1, 1, 1, 1];
+const { sin, cos, atan2 } = Math;
 const TWO_PI = Math.PI * 2;
 const PI_2 = Math.PI * 0.5;
+const WHITE = [1, 1, 1, 1];
 
 export default class ShapeRenderer {
   constructor(gl) {
@@ -72,7 +73,7 @@ export default class ShapeRenderer {
     if (alpha <= 0) return;
 
     // position
-    position.push(x1, y1, x2, y1, x2, y2);
+    position.push(x1, y1, x2, y2, x3, y3);
 
     // color
     applyVertexColors(color, 3, fill, alpha);
@@ -119,7 +120,6 @@ export default class ShapeRenderer {
 
     const c = [fill[0], fill[1], fill[2], fill[3] * alpha];
 
-    const { sin, cos } = Math;
     const step = (endAngle - startAngle) / precision;
 
     // cache previous point on circle
@@ -155,20 +155,31 @@ export default class ShapeRenderer {
 
     if (alpha <= 0) return;
 
-    const angle = Math.atan2(y1 - y2, x1 - x2);
+    const angle = atan2(y1 - y2, x1 - x2);
     const radius = stroke * 0.5;
 
-    const sin = Math.sin(angle + PI_2) * radius;
-    const cos = Math.cos(angle + PI_2) * radius;
+    const s = sin(angle + PI_2) * radius;
+    const c = cos(angle + PI_2) * radius;
 
     // position
-    position.push(x1 - cos, y1 - sin, x1 + cos, y1 + sin, x2 + cos, y2 + sin);
-    position.push(x1 - cos, y1 - sin, x2 + cos, y2 + sin, x2 - cos, y2 - sin);
+    position.push(x1 - c, y1 - s, x1 + c, y1 + s, x2 + c, y2 + s);
+    position.push(x1 - c, y1 - s, x2 + c, y2 + s, x2 - c, y2 - s);
 
     // color
     applyVertexColors(color, 6, fill, alpha);
 
     this.batchSize += 2;
+  }
+
+  trapezoid(x1, y1, x2, y2, x3, y3, x4, y4, fill = WHITE, alpha = 1) {
+    const {
+      arrays: { position, color },
+    } = this;
+
+    if (alpha <= 0) return;
+
+    this.triangle(x1, y1, x2, y2, x4, y4, fill, alpha);
+    this.triangle(x1, y1, x4, y4, x3, y3, fill, alpha);
   }
 
   hollowArc(
@@ -184,9 +195,12 @@ export default class ShapeRenderer {
   ) {
     if (precision < 0 || alpha <= 0) return;
 
+    const {
+      arrays: { position, color },
+    } = this;
+
     const c = [fill[0], fill[1], fill[2], fill[3] * alpha];
 
-    const { sin, cos } = Math;
     const step = (endAngle - startAngle) / precision;
 
     // cache previous point on circle
@@ -222,7 +236,6 @@ export default class ShapeRenderer {
 
     const c = [fill[0], fill[1], fill[2], fill[3] * alpha];
 
-    const { sin, cos } = Math;
     const step = (endAngle - startAngle) / precision;
 
     // cache previous point on circle
