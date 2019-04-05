@@ -1,22 +1,13 @@
 import * as twgl from 'twgl.js';
 import { m4 } from 'twgl.js';
-import { v3 } from 'twgl.js';
 
-import { nullCheck } from '@/helpers/functions';
+import { nullCheck, rotateView } from '@/helpers/functions';
 import { applyVertexColors } from '@/helpers/gl';
 
 import vertexShader from '@/shaders/sprite.vert';
 import fragmentShader from '@/shaders/sprite.frag';
 
 const DEFAULT_UVS = [0, 0, 1, 1];
-
-function rotateView(mat, x, y, rad) {
-  const translation = v3.create(x, y, 0);
-  const newMatrix = m4.translate(mat, translation);
-  m4.rotateZ(newMatrix, rad, newMatrix);
-  m4.translate(newMatrix, v3.negate(translation), newMatrix);
-  return newMatrix;
-}
 
 export default class SpriteRenderer {
   constructor(gl) {
@@ -98,12 +89,13 @@ export default class SpriteRenderer {
     this.scale = scale;
   }
 
-  rotateFlush(x, y, rad) {
+  rotateFlush(x, y, radians) {
+    const { uniforms } = this;
     const prevMatrix = this.uniforms.u_viewMatrix;
-    const nextMatrix = rotateView(prevMatrix, x, y, rad);
-    this.uniforms.u_viewMatrix = nextMatrix;
+    const nextMatrix = rotateView(prevMatrix, x, y, radians);
+    uniforms.u_viewMatrix = nextMatrix;
     this.flush();
-    this.uniforms.u_viewMatrix = prevMatrix;
+    uniforms.u_viewMatrix = prevMatrix;
   }
 
   add(sprite) {
@@ -117,7 +109,7 @@ export default class SpriteRenderer {
     }
 
     const isRotated =
-      sprite.rotation != 0 && typeof sprite.rotation === 'number';
+      typeof sprite.rotation === 'numner' && sprite.rotation !== 0;
     if (isRotated) {
       this.flush();
     }

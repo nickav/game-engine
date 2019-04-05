@@ -87,9 +87,12 @@ class Main {
     const { spriteBatch } = re;
     spriteBatch.setTexture(this.tex);
 
+    const x = 400;
+    const y = 400;
+
     const sprite = {
-      x: 100,
-      y: 100,
+      x: x + 100,
+      y: y + 100,
       anchorx: 0.5,
       anchory: 0.5,
       scalex: 4,
@@ -99,7 +102,7 @@ class Main {
 
     spriteBatch.flush();
     spriteBatch.add(sprite);
-    spriteBatch.add({ ...sprite, x: 200, y: 200 });
+    spriteBatch.add({ ...sprite, x: x + 200, y: y + 200 });
     spriteBatch.rotateFlush(sprite.x, sprite.y, Math.PI * t);
 
     this.spriteFontBatch.add({
