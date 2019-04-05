@@ -137,9 +137,7 @@ export default class ShapeRenderer {
       position.push(x, y, x + x1, y + y1, x + x2, y + y2);
 
       // color
-      color.push(c);
-      color.push(c);
-      color.push(c);
+      color.push(c, c, c);
 
       x1 = x2;
       y1 = y2;
@@ -283,30 +281,32 @@ export default class ShapeRenderer {
     }
   }
 
-  hollowRect(x1, y1, x2, y2, stroke = 1, fill = WHITE, alpha = 1, style = 0) {
+  hollowRect(x1, y1, x2, y2, stroke = 1, fill = WHITE, alpha = 1) {
     if (alpha <= 0) return;
 
-    //rectangle(x1, y1, x2, y2, fill = WHITE, alpha = 1) {
-    if (style === 1) {
-      // outset
-      this.rectangle(x1 - stroke, y1 - stroke, x2 + stroke, y1, fill, alpha); // top
-      this.rectangle(x1 - stroke, y2, x2 + stroke, y2 + stroke, fill, alpha); // bottom
-      this.rectangle(x1 - stroke, y1, x1, y2, fill, alpha); // left
-      this.rectangle(x2, y1, x2 + stroke, y2, fill, alpha); // right
-    } else if (style === 2) {
-      // middle
-      const hs = stroke * 0.5;
-      this.rectangle(x1 - hs, y1 - hs, x2 + hs, y1 + hs, fill, alpha); // top
-      this.rectangle(x1 - hs, y2 - hs, x2 + hs, y2 + hs, fill, alpha); // bottom
-      this.rectangle(x1 - hs, y1, x1 + hs, y2, fill, alpha); // left
-      this.rectangle(x2 - hs, y1, x2 + hs, y2, fill, alpha); // right
-    } else {
-      // inset (default)
-      this.rectangle(x1, y1, x2, y1 + stroke, fill, alpha); // top
-      this.rectangle(x1, y2 - stroke, x2, y2, fill, alpha); // bottom
-      this.rectangle(x1, y1 + stroke, x1 + stroke, y2 - stroke, fill, alpha); // left
-      this.rectangle(x2 - stroke, y1 + stroke, x2, y2 - stroke, fill, alpha); // right
-    }
+    const hs = stroke * 0.5;
+    this.rectangle(x1 - hs, y1 - hs, x2 + hs, y1 + hs, fill, alpha); // top
+    this.rectangle(x1 - hs, y2 - hs, x2 + hs, y2 + hs, fill, alpha); // bottom
+    this.rectangle(x1 - hs, y1, x1 + hs, y2, fill, alpha); // left
+    this.rectangle(x2 - hs, y1, x2 + hs, y2, fill, alpha); // right
+  }
+
+  insetRect(x1, y1, x2, y2, stroke = 1, fill = WHITE, alpha = 1) {
+    if (alpha <= 0) return;
+
+    this.rectangle(x1, y1, x2, y1 + stroke, fill, alpha); // top
+    this.rectangle(x1, y2 - stroke, x2, y2, fill, alpha); // bottom
+    this.rectangle(x1, y1 + stroke, x1 + stroke, y2 - stroke, fill, alpha); // left
+    this.rectangle(x2 - stroke, y1 + stroke, x2, y2 - stroke, fill, alpha); // right
+  }
+
+  outsetRect(x1, y1, x2, y2, stroke = 1, fill = WHITE, alpha = 1) {
+    if (alpha <= 0) return;
+
+    this.rectangle(x1 - stroke, y1 - stroke, x2 + stroke, y1, fill, alpha); // top
+    this.rectangle(x1 - stroke, y2, x2 + stroke, y2 + stroke, fill, alpha); // bottom
+    this.rectangle(x1 - stroke, y1, x1, y2, fill, alpha); // left
+    this.rectangle(x2, y1, x2 + stroke, y2, fill, alpha); // right
   }
 
   render() {
