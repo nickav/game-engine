@@ -92,13 +92,15 @@ class Main {
       y: 100,
       anchorx: 0.5,
       anchory: 0.5,
-      scalex: 20,
-      scaley: 20,
-      rotation: (Math.PI * t) / 2,
+      scalex: 4,
+      scaley: 4,
       ...this.sprites.bunny,
     };
 
+    spriteBatch.flush();
     spriteBatch.add(sprite);
+    spriteBatch.add({ ...sprite, x: 200, y: 200 });
+    spriteBatch.rotateFlush(sprite.x, sprite.y, Math.PI * t);
 
     this.spriteFontBatch.add({
       x: 0,

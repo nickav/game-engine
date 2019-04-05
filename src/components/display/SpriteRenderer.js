@@ -12,10 +12,10 @@ const DEFAULT_UVS = [0, 0, 1, 1];
 
 function rotateView(mat, x, y, rad) {
   const translation = v3.create(x, y, 0);
-  const viewMatrix2 = m4.translate(mat, translation);
-  m4.rotateZ(viewMatrix2, rad, viewMatrix2);
-  m4.translate(viewMatrix2, v3.negate(translation), viewMatrix2);
-  return viewMatrix2;
+  const newMatrix = m4.translate(mat, translation);
+  m4.rotateZ(newMatrix, rad, newMatrix);
+  m4.translate(newMatrix, v3.negate(translation), newMatrix);
+  return newMatrix;
 }
 
 export default class SpriteRenderer {
@@ -98,7 +98,13 @@ export default class SpriteRenderer {
     this.scale = scale;
   }
 
-  rotateFlush(x, y, rotation) {}
+  rotateFlush(x, y, rad) {
+    const prevMatrix = this.uniforms.u_viewMatrix;
+    const nextMatrix = rotateView(prevMatrix, x, y, rad);
+    this.uniforms.u_viewMatrix = nextMatrix;
+    this.flush();
+    this.uniforms.u_viewMatrix = prevMatrix;
+  }
 
   add(sprite) {
     if (sprite.visible === false || sprite.alpha <= 0) {
@@ -110,7 +116,9 @@ export default class SpriteRenderer {
       this.flush();
     }
 
-    if (sprite.rotation != 0) {
+    const isRotated =
+      sprite.rotation != 0 && typeof sprite.rotation === 'number';
+    if (isRotated) {
       this.flush();
     }
 
@@ -186,17 +194,8 @@ export default class SpriteRenderer {
       }
     }
 
-    if (sprite.rotation != 0) {
-      const originalMatrix = this.uniforms.u_viewMatrix;
-      const viewMatrix2 = rotateView(
-        this.uniforms.u_viewMatrix,
-        sprite.x,
-        sprite.y,
-        sprite.rotation
-      );
-      this.uniforms.u_viewMatrix = viewMatrix2;
-      this.flush();
-      this.uniforms.u_viewMatrix = originalMatrix;
+    if (isRotated) {
+      this.rotateFlush(sprite.x, sprite.y, sprite.rotation);
     }
   }
 
