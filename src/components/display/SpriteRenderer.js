@@ -1,5 +1,6 @@
 import * as twgl from 'twgl.js';
 import { m4 } from 'twgl.js';
+import { v3 } from 'twgl.js';
 
 import { nullCheck } from '@/helpers/functions';
 import { applyVertexColors } from '@/helpers/gl';
@@ -8,6 +9,14 @@ import vertexShader from '@/shaders/sprite.vert';
 import fragmentShader from '@/shaders/sprite.frag';
 
 const DEFAULT_UVS = [0, 0, 1, 1];
+
+function rotateView(mat, x, y, rad) {
+  const translation = v3.create(x, y, 0);
+  const viewMatrix2 = m4.translate(mat, translation);
+  m4.rotateZ(viewMatrix2, rad, viewMatrix2);
+  m4.translate(viewMatrix2, v3.negate(translation), viewMatrix2);
+  return viewMatrix2;
+}
 
 export default class SpriteRenderer {
   constructor(gl) {
@@ -89,6 +98,8 @@ export default class SpriteRenderer {
     this.scale = scale;
   }
 
+  rotateFlush(x, y, rotation) {}
+
   add(sprite) {
     if (sprite.visible === false || sprite.alpha <= 0) {
       return;
@@ -96,6 +107,10 @@ export default class SpriteRenderer {
 
     if (this.batchSize >= this.MAX_SPRITES) {
       console.warn('SpriteRenderer: batch full, auto-flushing...');
+      this.flush();
+    }
+
+    if (sprite.rotation != 0) {
       this.flush();
     }
 
@@ -170,6 +185,19 @@ export default class SpriteRenderer {
         throw new Error('SpriteRenderer: failed to add sprite to batch.');
       }
     }
+
+    if (sprite.rotation != 0) {
+      const originalMatrix = this.uniforms.u_viewMatrix;
+      const viewMatrix2 = rotateView(
+        this.uniforms.u_viewMatrix,
+        sprite.x,
+        sprite.y,
+        sprite.rotation
+      );
+      this.uniforms.u_viewMatrix = viewMatrix2;
+      this.flush();
+      this.uniforms.u_viewMatrix = originalMatrix;
+    }
   }
 
   render() {
@@ -206,5 +234,9 @@ export default class SpriteRenderer {
 
   getTexture() {
     return this.uniforms.u_texture;
+  }
+
+  getViewMatrix() {
+    return this.uniforms.u_viewMatrix;
   }
 }

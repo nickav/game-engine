@@ -1,4 +1,6 @@
-import { Game, Color, SpriteFontRenderer } from '@';
+import { m4, v3 } from 'twgl.js';
+
+import { Game, Color, SpriteFontRenderer, parseTextureAtlas } from '@';
 import _ from 'hibar';
 
 import tinyunicodeAtlas from '@public/tinyunicode.json';
@@ -19,42 +21,6 @@ game.state.set({
       .add('sprites', sprites)
       .load((res) => game.state.set(new Main(res)));
   },
-
-  render(re) {
-    const { shapeBatch, width, height } = re;
-
-    const w2 = width * 0.5;
-    const h2 = height * 0.5;
-    const bar = { w: 128, h: 16 };
-
-    //const t = (game.loop.time / 1000) % 1;
-    const t = game.loader.percent;
-    const c1 = Color.make(1, 0, 1);
-    const c2 = Color.make(1, 1, 1);
-    const fill = [c1, c2, c2, c1];
-
-    // fill
-    shapeBatch.rectangle(
-      w2 - bar.w,
-      h2 - bar.h,
-      w2 - bar.w + 2 * t * bar.w,
-      h2 + bar.h,
-      fill
-    );
-
-    // outline
-    shapeBatch.hollowRect(
-      w2 - bar.w,
-      h2 - bar.h,
-      w2 + bar.w,
-      h2 + bar.h,
-      6,
-      Color.BLACK
-    );
-    shapeBatch.hollowRect(w2 - bar.w, h2 - bar.h, w2 + bar.w, h2 + bar.h, 2);
-
-    shapeBatch.flush();
-  },
 });
 
 class Main {
@@ -67,6 +33,8 @@ class Main {
     );
 
     this.spriteFontBatch.setFont('tinyunicode.png', tinyunicodeAtlas);
+
+    this.sprites = parseTextureAtlas(spritesAtlas);
   }
 
   create() {}
@@ -118,6 +86,19 @@ class Main {
     // draw sprite font
     const { spriteBatch } = re;
     spriteBatch.setTexture(this.tex);
+
+    const sprite = {
+      x: 100,
+      y: 100,
+      anchorx: 0.5,
+      anchory: 0.5,
+      scalex: 20,
+      scaley: 20,
+      rotation: (Math.PI * t) / 2,
+      ...this.sprites.bunny,
+    };
+
+    spriteBatch.add(sprite);
 
     this.spriteFontBatch.add({
       x: 0,

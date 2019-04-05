@@ -19,6 +19,7 @@ export default class Renderer extends View {
     this.view = canvas;
     this.backgroundColor = [0, 0, 0, 1];
     this.onResize = null;
+    this.scale = window.devicePixelRatio || 1;
 
     if (!gl) {
       console.error(
@@ -100,7 +101,7 @@ export default class Renderer extends View {
     const { gl, view } = this;
 
     // update canvas view
-    const scale = window.devicePixelRatio;
+    const scale = this.scale;
 
     if (twgl.resizeCanvasToDisplaySize(view, scale)) {
       gl.viewport(0, 0, view.width, view.height);
