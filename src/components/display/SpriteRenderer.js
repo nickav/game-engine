@@ -101,25 +101,20 @@ export default class SpriteRenderer {
       this.flush();
     }
 
-    const isRotated =
-      typeof sprite.rotation === 'numner' && sprite.rotation !== 0;
-
-    if (isRotated) {
-      this.flush();
-    }
-
     const {
       arrays: { position, texcoord, color },
     } = this;
 
     // position
+    const s = typeof sprite.scale === 'number' ? sprite.scale : 1;
+    const scalex = typeof sprite.scalex === 'number' ? sprite.scalex : s;
+    const scaley = typeof sprite.scaley === 'number' ? sprite.scaley : s;
+
+    const a = typeof sprite.anchor === 'number' ? sprite.anchor : 0;
+    const anchorx = typeof sprite.anchorx === 'number' ? sprite.anchorx : a;
+    const anchory = typeof sprite.anchory === 'number' ? sprite.anchory : a;
+
     const { x, y, width, height } = sprite;
-
-    const scalex = typeof sprite.scalex === 'number' ? sprite.scalex : 1;
-    const scaley = typeof sprite.scaley === 'number' ? sprite.scaley : 1;
-    const anchorx = typeof sprite.anchorx === 'number' ? sprite.anchorx : 0;
-    const anchory = typeof sprite.anchory === 'number' ? sprite.anchory : 0;
-
     const { scale } = this;
     const sw = width * scalex * scale;
     const sh = height * scaley * scale;
@@ -178,11 +173,6 @@ export default class SpriteRenderer {
         console.error('Check sprite for non-numeric values:', sprite);
         throw new Error('SpriteRenderer: failed to add sprite to batch.');
       }
-    }
-
-    if (isRotated) {
-      this.renderWithRotation(sprite.x, sprite.y, sprite.rotation);
-      this.clear();
     }
   }
 

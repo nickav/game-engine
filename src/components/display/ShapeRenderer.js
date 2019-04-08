@@ -341,6 +341,17 @@ export default class ShapeRenderer {
     twgl.drawBufferInfo(gl, bufferInfo, gl.TRIANGLES, batchSize * 3);
   }
 
+  renderWithRotation(x, y, radians) {
+    const { view } = this;
+
+    view.save();
+    view.rotate2D(x, y, radians);
+
+    this.render();
+
+    view.restore();
+  }
+
   flush() {
     this.render();
     this.clear();

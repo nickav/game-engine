@@ -95,8 +95,7 @@ class Main {
       y: y + 100,
       anchorx: 0.5,
       anchory: 0.5,
-      scalex: 4,
-      scaley: 4,
+      scale: 4,
       ...this.sprites.bunny,
     };
 
