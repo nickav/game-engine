@@ -37,7 +37,10 @@ class Main {
     this.sprites = parseTextureAtlas(spritesAtlas);
   }
 
-  create() {}
+  create() {
+    const { spriteBatch } = this.game.renderer;
+    spriteBatch.setTexture(this.tex);
+  }
 
   render(re) {
     // draw rectangles
@@ -85,7 +88,6 @@ class Main {
 
     // draw sprite font
     const { spriteBatch } = re;
-    spriteBatch.setTexture(this.tex);
 
     const x = 400;
     const y = 400;

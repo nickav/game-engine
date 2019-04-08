@@ -18,7 +18,6 @@ export default class Renderer extends View {
     this.gl = gl;
     this.view = canvas;
     this.backgroundColor = [0, 0, 0, 1];
-    this.onResize = null;
     this.scale = window.devicePixelRatio || 1;
 
     if (!gl) {
@@ -41,6 +40,10 @@ export default class Renderer extends View {
       [BlendMode.ADD]: [gl.SRC_ALPHA, gl.ONE],
     };
 
+    // set default blend mode
+    gl.enable(gl.BLEND);
+    gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+
     this.resize();
   }
 
@@ -52,14 +55,8 @@ export default class Renderer extends View {
 
     this.resize();
 
-    // set background color
-    const { backgroundColor: bg } = this;
-    gl.clearColor(bg[0], bg[1], bg[2], bg[3]);
+    // clear background color
     gl.clear(gl.COLOR_BUFFER_BIT);
-
-    // set default blend mode
-    gl.enable(gl.BLEND);
-    gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
 
     // update view matricies
     const viewMatrix = this.getViewMatrix();
@@ -85,12 +82,14 @@ export default class Renderer extends View {
     this.backgroundColor[1] = g;
     this.backgroundColor[2] = b;
     this.backgroundColor[3] = a;
+
+    this.gl.clearColor(r, g, b, a);
   }
 
   setBlendMode(blendMode) {
     const { blendModes } = this;
     const args = blendModes[blendMode] || blendModes[BlendMode.NORMAL];
-    this.gl.blendFunc(...args);
+    this.gl.blendFunc(args[0], args[1]);
   }
 
   isReady() {
@@ -98,16 +97,12 @@ export default class Renderer extends View {
   }
 
   resize = () => {
-    const { gl, view } = this;
+    const { gl, scale, view } = this;
 
-    // update canvas view
-    const scale = this.scale;
-
+    // update canvas view (if needed)
     if (twgl.resizeCanvasToDisplaySize(view, scale)) {
       gl.viewport(0, 0, view.width, view.height);
       this.setSize(view.width, view.height, scale);
-
-      this.onResize && this.onResize();
     }
   };
 }

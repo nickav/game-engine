@@ -34,8 +34,6 @@ export default class Game {
       return;
     }
 
-    this.renderer.onResize = this.render;
-
     this.state.trigger('init');
 
     this.create();
@@ -68,14 +66,16 @@ export default class Game {
   };
 
   start = () => {
-    this.loop.start((dt) => {
-      this.update(dt);
-      this.render();
-    });
+    this.loop.start(this.tick);
   };
 
   stop = () => {
     this.loop.stop();
+  };
+
+  tick = (dt) => {
+    this.update(dt);
+    this.render();
   };
 
   update = (dt) => {
