@@ -3,6 +3,7 @@ import { m4 } from 'twgl.js';
 
 import { nullCheck } from '@/helpers/functions';
 import { applyVertexColors } from '@/helpers/gl';
+import MatrixStack from '@/components/core/MatrixStack';
 
 import vertexShader from '@/shaders/shape.vert';
 import fragmentShader from '@/shaders/shape.frag';
@@ -16,6 +17,8 @@ export default class ShapeRenderer {
   constructor(gl) {
     this.gl = gl;
     this.debug = process.env.NODE_ENV === 'development';
+
+    this.view = new MatrixStack();
 
     // 3 vertices each triangle
     this.MAX_SHAPES = ~~(65536 / 3);
@@ -45,7 +48,7 @@ export default class ShapeRenderer {
     this.batchSize = 0;
 
     this.uniforms = {
-      u_viewMatrix: m4.identity(),
+      u_viewMatrix: this.view.getCurrentMatrix(),
     };
   }
 
@@ -62,7 +65,7 @@ export default class ShapeRenderer {
   }
 
   setViewMatrix(viewMatrix) {
-    this.uniforms.u_viewMatrix = viewMatrix;
+    this.view.setCurrentMatrix(viewMatrix);
   }
 
   triangle(x1, y1, x2, y2, x3, y3, fill = WHITE, alpha = 1) {
@@ -310,9 +313,20 @@ export default class ShapeRenderer {
   }
 
   render() {
-    const { arrays, batchSize, gl, programInfo, bufferInfo, uniforms } = this;
+    const {
+      arrays,
+      batchSize,
+      gl,
+      programInfo,
+      bufferInfo,
+      uniforms,
+      view,
+    } = this;
 
     if (batchSize === 0) return;
+
+    // update uniforms
+    uniforms.u_viewMatrix = view.getCurrentMatrix();
 
     gl.useProgram(programInfo.program);
 
@@ -333,9 +347,11 @@ export default class ShapeRenderer {
   }
 
   clear() {
-    if (this.batchSize === 0) return;
     this.batchSize = 0;
-    this.arrays.position.reset();
-    this.arrays.color.reset();
+
+    // reset arrays
+    const { position, color } = this.arrays;
+    position.reset();
+    color.reset();
   }
 }

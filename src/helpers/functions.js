@@ -155,11 +155,3 @@ export const stringifyColor = (color) => {
 
   return a || a !== 1 ? `${hex}${(a * 255).toString(16)}` : hex;
 };
-
-export const rotateView = (mat, x, y, radians) => {
-  const translation = v3.create(x, y, 0);
-  const newMatrix = m4.translate(mat, translation);
-  m4.rotateZ(newMatrix, radians, newMatrix);
-  m4.translate(newMatrix, v3.negate(translation), newMatrix);
-  return newMatrix;
-};

@@ -1,8 +1,9 @@
 import * as twgl from 'twgl.js';
 import { m4 } from 'twgl.js';
 
-import { nullCheck, rotateView } from '@/helpers/functions';
+import { nullCheck } from '@/helpers/functions';
 import { applyVertexColors } from '@/helpers/gl';
+import MatrixStack from '@/components/core/MatrixStack';
 
 import vertexShader from '@/shaders/sprite.vert';
 import fragmentShader from '@/shaders/sprite.frag';
@@ -10,9 +11,12 @@ import fragmentShader from '@/shaders/sprite.frag';
 const DEFAULT_UVS = [0, 0, 1, 1];
 
 export default class SpriteRenderer {
-  constructor(gl) {
+  constructor(gl, options) {
     this.gl = gl;
     this.debug = process.env.NODE_ENV === 'development';
+
+    this.scale = 1;
+    this.view = new MatrixStack();
 
     // 4 vertices each sprite square
     this.MAX_SPRITES = ~~(65536 / 4);
@@ -52,11 +56,9 @@ export default class SpriteRenderer {
 
     this.batchSize = 0;
     this.uniforms = {
-      u_viewMatrix: m4.identity(),
+      u_viewMatrix: this.view.getCurrentMatrix(),
       u_texture: null,
     };
-
-    this.scale = 1;
   }
 
   destroy() {
@@ -78,7 +80,7 @@ export default class SpriteRenderer {
   }
 
   setViewMatrix(viewMatrix) {
-    this.uniforms.u_viewMatrix = viewMatrix;
+    this.view.setCurrentMatrix(viewMatrix);
   }
 
   setProgram(programInfo) {
@@ -87,15 +89,6 @@ export default class SpriteRenderer {
 
   setScale(scale) {
     this.scale = scale;
-  }
-
-  rotateFlush(x, y, radians) {
-    const { uniforms } = this;
-    const prevMatrix = this.uniforms.u_viewMatrix;
-    const nextMatrix = rotateView(prevMatrix, x, y, radians);
-    uniforms.u_viewMatrix = nextMatrix;
-    this.flush();
-    uniforms.u_viewMatrix = prevMatrix;
   }
 
   add(sprite) {
@@ -110,6 +103,7 @@ export default class SpriteRenderer {
 
     const isRotated =
       typeof sprite.rotation === 'numner' && sprite.rotation !== 0;
+
     if (isRotated) {
       this.flush();
     }
@@ -187,14 +181,26 @@ export default class SpriteRenderer {
     }
 
     if (isRotated) {
-      this.rotateFlush(sprite.x, sprite.y, sprite.rotation);
+      this.renderWithRotation(sprite.x, sprite.y, sprite.rotation);
+      this.clear();
     }
   }
 
   render() {
-    const { arrays, batchSize, gl, programInfo, bufferInfo, uniforms } = this;
+    const {
+      arrays,
+      batchSize,
+      gl,
+      programInfo,
+      bufferInfo,
+      uniforms,
+      view,
+    } = this;
 
     if (batchSize === 0 || !uniforms.u_texture) return;
+
+    // update uniforms
+    uniforms.u_viewMatrix = view.getCurrentMatrix();
 
     gl.useProgram(programInfo.program);
 
@@ -210,6 +216,17 @@ export default class SpriteRenderer {
     twgl.drawBufferInfo(gl, bufferInfo, gl.TRIANGLES, batchSize * 6);
   }
 
+  renderWithRotation(x, y, radians) {
+    const { view } = this;
+
+    view.save();
+    view.rotate2D(x, y, radians);
+
+    this.render();
+
+    view.restore();
+  }
+
   flush() {
     this.render();
     this.clear();
@@ -217,6 +234,8 @@ export default class SpriteRenderer {
 
   clear() {
     this.batchSize = 0;
+
+    // reset arrays
     const { position, texcoord, color } = this.arrays;
     position.reset();
     texcoord.reset();
@@ -225,9 +244,5 @@ export default class SpriteRenderer {
 
   getTexture() {
     return this.uniforms.u_texture;
-  }
-
-  getViewMatrix() {
-    return this.uniforms.u_viewMatrix;
   }
 }

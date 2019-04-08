@@ -103,7 +103,8 @@ class Main {
     spriteBatch.flush();
     spriteBatch.add(sprite);
     spriteBatch.add({ ...sprite, x: x + 200, y: y + 200 });
-    spriteBatch.rotateFlush(sprite.x, sprite.y, Math.PI * t);
+    spriteBatch.renderWithRotation(sprite.x, sprite.y, Math.PI * t);
+    spriteBatch.clear();
 
     this.spriteFontBatch.add({
       x: 0,
