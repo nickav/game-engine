@@ -45,6 +45,10 @@ class Main {
   render(re) {
     // draw rectangles
     const { shapeBatch } = re;
+
+    shapeBatch.triangle(0, 0, 100, 0, 0, 100);
+    return;
+
     const t = (this.game.loop.time / 1000) % 2;
 
     const rot = t * Math.PI * 2;

@@ -1,9 +1,8 @@
 import * as twgl from 'twgl.js';
-import { m4 } from 'twgl.js';
 
 import { nullCheck } from '@/helpers/functions';
 import { applyVertexColors } from '@/helpers/gl';
-import MatrixStack from '@/components/core/MatrixStack';
+import { MatrixStack, Shader } from '@/components/core';
 
 import vertexShader from '@/shaders/shape.vert';
 import fragmentShader from '@/shaders/shape.frag';
@@ -12,44 +11,73 @@ const { sin, cos, atan2 } = Math;
 const TWO_PI = Math.PI * 2;
 const PI_2 = Math.PI * 0.5;
 const WHITE = [1, 1, 1, 1];
+const DEFAULT_CONFIG = {
+  size: 2048,
+};
+
+/**
+ * Add `push` to a typed array. It just keeps a 'cursor'
+ * and allows use to `push` values into the array so we
+ * don't have to manually compute offsets
+ * @param {TypedArray} typedArray TypedArray to augment
+ * @param {number} numComponents number of components.
+ * @private
+ */
+
+function augmentTypedArray(typedArray, numComponents) {
+  var cursor = 0;
+
+  typedArray.push = function() {
+    for (var ii = 0; ii < arguments.length; ++ii) {
+      var value = arguments[ii];
+
+      if (value.legnth !== 0) {
+        for (var jj = 0; jj < value.length; ++jj) {
+          typedArray[cursor++] = value[jj];
+        }
+      } else {
+        typedArray[cursor++] = value;
+      }
+    }
+  };
+
+  typedArray.reset = function(opt_index) {
+    cursor = opt_index || 0;
+  };
+
+  typedArray.numComponents = numComponents;
+  Object.defineProperty(typedArray, 'numElements', {
+    get: function get() {
+      return (this.length / this.numComponents) | 0;
+    },
+  });
+  return typedArray;
+}
 
 export default class ShapeRenderer {
-  constructor(gl) {
+  constructor(gl, options) {
+    const config = { ...DEFAULT_CONFIG, ...options };
+
     this.gl = gl;
     this.debug = process.env.NODE_ENV === 'development';
 
-    this.view = new MatrixStack();
-
-    // 3 vertices each triangle
-    this.MAX_SHAPES = ~~(65536 / 3);
-
-    const numVertices = 3 * this.MAX_SHAPES;
-
-    this.arrays = {
-      position: twgl.primitives.createAugmentedTypedArray(
-        2,
-        numVertices,
-        Float32Array
-      ),
-      color: twgl.primitives.createAugmentedTypedArray(
-        4,
-        numVertices,
-        Float32Array
-      ),
-    };
-
-    this.bufferInfo = twgl.createBufferInfoFromArrays(gl, this.arrays);
-
-    this.programInfo = twgl.createProgramInfo(gl, [
-      vertexShader,
-      fragmentShader,
-    ]);
-
+    this.MAX_SHAPES = config.size;
     this.batchSize = 0;
+    this.dirty = false;
 
+    this.shader = new Shader(gl, vertexShader, fragmentShader);
+    this.view = new MatrixStack();
     this.uniforms = {
       u_viewMatrix: this.view.getCurrentMatrix(),
     };
+
+    // 3 vertices in each triangle
+    const numVertices = 3 * this.MAX_SHAPES;
+
+    this.vertices = augmentTypedArray(new Float32Array(numVertices), 3);
+    this.vbo = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, this.vbo);
+    gl.bufferData(gl.ARRAY_BUFFER, this.vertices, gl.DYNAMIC_DRAW);
   }
 
   destroy() {
@@ -69,17 +97,15 @@ export default class ShapeRenderer {
   }
 
   triangle(x1, y1, x2, y2, x3, y3, fill = WHITE, alpha = 1) {
-    const {
-      arrays: { position, color },
-    } = this;
+    const { vertices } = this;
 
     if (alpha <= 0) return;
 
     // position
-    position.push(x1, y1, x2, y2, x3, y3);
+    vertices.push(x1, y1, x2, y2, x3, y3);
 
     // color
-    applyVertexColors(color, 3, fill, alpha);
+    //applyVertexColors(color, 3, fill, alpha);
 
     this.batchSize++;
   }
@@ -321,9 +347,26 @@ export default class ShapeRenderer {
       bufferInfo,
       uniforms,
       view,
+      vbo,
     } = this;
 
     if (batchSize === 0) return;
+
+    console.log(this.vbo);
+    gl.bindBuffer(gl.ARRAY_BUFFER, this.vbo);
+    //const size = batchSize * 6;
+    //gl.bufferSubData(gl.ARRAY_BUFFER, 0, size, this.vertices);
+    gl.bufferData(gl.ARRAY_BUFFER, this.vertices, gl.DYNAMIC_DRAW);
+
+    this.shader.use();
+    this.shader.set('u_viewMatrix', view.getCurrentMatrix());
+
+    const stride = 6;
+    this.shader.setVert('position', 2, gl.FLOAT, gl.FALSE, 0, 0);
+
+    gl.drawArrays(gl.TRIANGLES, 0, batchSize * 3);
+
+    return;
 
     // update uniforms
     uniforms.u_viewMatrix = view.getCurrentMatrix();

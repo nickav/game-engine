@@ -1,5 +1,4 @@
 import * as twgl from 'twgl.js';
-import { m4 } from 'twgl.js';
 
 import { nullCheck } from '@/helpers/functions';
 import { applyVertexColors } from '@/helpers/gl';
@@ -9,17 +8,21 @@ import vertexShader from '@/shaders/sprite.vert';
 import fragmentShader from '@/shaders/sprite.frag';
 
 const DEFAULT_UVS = [0, 0, 1, 1];
+const DEFAULT_CONFIG = {
+  size: 2048,
+};
 
 export default class SpriteRenderer {
   constructor(gl, options) {
+    const config = { ...DEFAULT_CONFIG, ...options };
+
     this.gl = gl;
     this.debug = process.env.NODE_ENV === 'development';
 
     this.scale = 1;
     this.view = new MatrixStack();
 
-    // 4 vertices each sprite square
-    this.MAX_SPRITES = ~~(65536 / 4);
+    this.MAX_SPRITES = config.size;
 
     const numVertices = 4 * this.MAX_SPRITES;
     const numIndices = 6 * this.MAX_SPRITES;
