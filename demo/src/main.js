@@ -47,6 +47,8 @@ class Main {
     const { shapeBatch } = re;
 
     shapeBatch.triangle(0, 0, 100, 0, 0, 100);
+    shapeBatch.flush();
+
     return;
 
     const t = (this.game.loop.time / 1000) % 2;

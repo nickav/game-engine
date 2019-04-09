@@ -352,17 +352,20 @@ export default class ShapeRenderer {
 
     if (batchSize === 0) return;
 
-    console.log(this.vbo);
     gl.bindBuffer(gl.ARRAY_BUFFER, this.vbo);
     //const size = batchSize * 6;
     //gl.bufferSubData(gl.ARRAY_BUFFER, 0, size, this.vertices);
     gl.bufferData(gl.ARRAY_BUFFER, this.vertices, gl.DYNAMIC_DRAW);
 
     this.shader.use();
-    this.shader.set('u_viewMatrix', view.getCurrentMatrix());
+    this.shader.gl.uniformMatrix4fv(
+      this.shader.getUniform('u_viewMatrix'),
+      false,
+      view.getCurrentMatrix()
+    );
 
     const stride = 6;
-    this.shader.setVert('position', 2, gl.FLOAT, gl.FALSE, 0, 0);
+    this.shader.setVert('position', 2, gl.FLOAT, false, 0, 0);
 
     gl.drawArrays(gl.TRIANGLES, 0, batchSize * 3);
 
@@ -402,6 +405,8 @@ export default class ShapeRenderer {
 
   clear() {
     this.batchSize = 0;
+    this.vertices.reset();
+    return;
 
     // reset arrays
     const { position, color } = this.arrays;
