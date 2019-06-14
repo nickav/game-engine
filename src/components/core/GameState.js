@@ -1,5 +1,3 @@
-import { assert } from '@/helpers/functions';
-
 export default class GameState {
   constructor(props = {}) {
     this.stack = [];

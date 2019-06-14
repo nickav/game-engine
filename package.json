@@ -4,7 +4,8 @@
     "dist": "yarn clean && webpack --mode=production",
     "start": "yarn start:dev",
     "start:dev": "NODE_ENV=development webpack-dev-server --inline --hot --host 0.0.0.0 --content-base bin/ --history-api-fallback",
-    "sprites": "node build/create-spritesheet assets/sprites/ public/"
+    "sprites": "node build/create-spritesheet assets/sprites/ public/",
+    "font": "node build/spritefont"
   },
   "dependencies": {
     "@babel/core": "^7.3.4",
