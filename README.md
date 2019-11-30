@@ -18,7 +18,7 @@ Keep this running in the background:
 ```bash
 yarn start
 ```
-Now navigate to [http://localhost:8080](http://localhost:8080) to view the app.
+Now navigate to [http://localhost:4000](http://localhost:4000) to view the demo app.
 
 
 ## Building

@@ -1,7 +1,6 @@
 import { m4, v3 } from 'twgl.js';
 
 import { Game, Color, SpriteFontRenderer, parseTextureAtlas } from '@';
-import _ from 'hibar';
 
 import tinyunicodeAtlas from '@public/tinyunicode.json';
 import spritesAtlas from '@public/sprites.json';
@@ -10,6 +9,7 @@ import sprites from '@public/sprites.png';
 const canvas = document.getElementById('view');
 const game = new Game(canvas);
 
+// try typing game in the inspector!
 window.game = game;
 
 game.setBackgroundColor(0, 0, 0);
