@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "clean": "rm -rf bin",
+    "clean": "rm -rf lib",
     "dist": "yarn clean && webpack --mode=production",
     "start": "yarn start:demo",
     "start:demo": "NODE_ENV=development webpack-dev-server --config demo/webpack.config.js --inline --hot --host 0.0.0.0 --content-base demo/bin/ --history-api-fallback --port 4000",

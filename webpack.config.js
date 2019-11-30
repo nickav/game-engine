@@ -4,20 +4,6 @@ const webpack = require('webpack');
 
 const isProd = process.env.NODE_ENV === 'production';
 
-const CopyWebpackPlugin = require('copy-webpack-plugin');
-const copy = new CopyWebpackPlugin([{ from: 'public', ignore: ['img/*'] }]);
-
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-
-const html = new HtmlWebpackPlugin({
-  template: 'src/index.html',
-  inject: true,
-  vars: {
-    title: 'Hello',
-    description: '',
-  },
-});
-
 const hashedModuleIds = new webpack.HashedModuleIdsPlugin();
 
 module.exports = {
@@ -25,11 +11,13 @@ module.exports = {
 
   devtool: isProd ? 'inline-source-map' : '',
 
-  entry: './src/main.js',
+  entry: './src/index.js',
 
   output: {
-    path: path.join(__dirname, 'bin'),
-    filename: 'bundle.[hash].js',
+    path: path.join(__dirname, 'lib'),
+    filename: 'game-engine.js',
+    library: 'game-engine',
+    libraryTarget: 'umd'
   },
 
   resolve: {
@@ -81,7 +69,7 @@ module.exports = {
     ],
   },
 
-  plugins: [hashedModuleIds, copy, html],
+  plugins: [hashedModuleIds],
 
   devServer: {
     host: '0.0.0.0',
